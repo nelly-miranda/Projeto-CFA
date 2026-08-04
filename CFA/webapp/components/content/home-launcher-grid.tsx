@@ -37,16 +37,13 @@ export function HomeLauncherGrid({ items }: { items: NavNode[] }) {
               <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl text-white", visual.bg)}>
                 <Icon className="size-5" />
               </span>
-              <span className="flex min-w-0 flex-col">
-                <span className="flex items-center gap-1.5">
-                  <span className="truncate text-[13.5px] font-semibold text-foreground">{node.title}</span>
-                  {visual.badge ? (
-                    <span className="shrink-0 rounded-full bg-emerald-100 px-1.5 py-[1px] text-[9px] font-bold tracking-wide text-emerald-700 uppercase dark:bg-emerald-500/15 dark:text-emerald-400">
-                      {visual.badge}
-                    </span>
-                  ) : null}
-                </span>
-                <span className="truncate text-[11.5px] text-muted-foreground">/{node.slug}</span>
+              <span className="flex min-w-0 items-center gap-1.5">
+                <span className="truncate text-[13.5px] font-semibold text-foreground">{node.title}</span>
+                {visual.badge ? (
+                  <span className="shrink-0 rounded-full bg-emerald-100 px-1.5 py-[1px] text-[9px] font-bold tracking-wide text-emerald-700 uppercase dark:bg-emerald-500/15 dark:text-emerald-400">
+                    {visual.badge}
+                  </span>
+                ) : null}
               </span>
             </Link>
           );

@@ -7,6 +7,7 @@ import { HomeLauncherGrid } from "@/components/content/home-launcher-grid";
 import { PageEditor } from "@/components/content/page-editor";
 import { MarkdownView } from "@/components/content/markdown-view";
 import { PanelPreview } from "@/components/content/panel-preview";
+import { InvestimentoCalculadora } from "@/components/content/investimento-calculadora";
 import { ApresentacaoSite } from "@/components/content/apresentacao-site";
 import { MetodoVerticeJornada } from "@/components/content/metodo-vertice-jornada";
 import { ConexoesInteligentesJornada } from "@/components/content/conexoes-inteligentes-jornada";
@@ -64,7 +65,12 @@ export default async function ContentPage({ params }: PageParams) {
   const page = getPageBySlug(slug) ?? fallbackPage(slug, node.title, node.kind);
 
   if (node.kind === "leaf") {
-    const embed = slug === "painel/modelo-painel" ? <PanelPreview key="painel-preview" /> : undefined;
+    const embed =
+      slug === "painel/modelo-painel" ? (
+        <PanelPreview key="painel-preview" />
+      ) : slug === "investimento" ? (
+        <InvestimentoCalculadora key="investimento-calculadora" />
+      ) : undefined;
     return <PageEditor page={page} embed={embed} />;
   }
 
@@ -80,7 +86,7 @@ export default async function ContentPage({ params }: PageParams) {
     <div className="flex flex-col gap-6">
       <div className={cn("flex flex-col gap-2", slug === "home" && "items-center text-center")}>
         {slug === "home" ? (
-          <div className="mx-auto flex max-w-2xl flex-col items-center gap-5">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-5">
             <span className="text-xs font-semibold uppercase tracking-widest text-[#5B6EF0]">
               Programa CFA/CRAs
             </span>

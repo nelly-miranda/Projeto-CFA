@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, type LucideIcon } from "lucide-react";
 import { NavItem } from "@/components/layout/nav-item";
 import type { NavNode } from "@/lib/nav-tree";
 import { cn } from "@/lib/utils";
@@ -12,9 +12,11 @@ export interface NavGroupProps {
   depth?: number;
   /** Expandido por padrão (calculado a partir do breadcrumb do slug ativo). */
   defaultExpanded?: boolean;
+  /** Ícone exibido apenas nos grupos de primeiro nível. */
+  icon?: LucideIcon;
 }
 
-export function NavGroup({ node, depth = 0, defaultExpanded = false }: NavGroupProps) {
+export function NavGroup({ node, depth = 0, defaultExpanded = false, icon: Icon }: NavGroupProps) {
   const [expanded, setExpanded] = useState(defaultExpanded);
   const pathname = usePathname();
   const isActiveSubtree =
@@ -33,11 +35,14 @@ export function NavGroup({ node, depth = 0, defaultExpanded = false }: NavGroupP
           "flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-left text-sm transition-all duration-150 ease-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B6EF0] focus-visible:ring-offset-1",
           isActiveSubtree
-            ? "bg-white font-semibold text-[#12153D] shadow-md"
+            ? "bg-white font-semibold text-[#12153D] shadow-[0_10px_24px_-6px_rgba(0,0,0,0.45)]"
             : "font-medium text-white/65 hover:bg-white/[0.06] hover:text-white"
         )}
       >
-        <span>{node.title}</span>
+        <span className="flex items-center gap-2.5">
+          {Icon ? <Icon className={cn("size-4 shrink-0", isActiveSubtree ? "text-[#12153D]" : "text-white/45")} /> : null}
+          {node.title}
+        </span>
         <ChevronRight
           className={cn(
             "size-4 shrink-0 transition-transform duration-150",

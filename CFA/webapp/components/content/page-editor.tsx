@@ -78,7 +78,7 @@ export function PageEditor({ page, embed }: PageEditorProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 print:hidden">
         <h1 className="text-2xl font-bold">{frontmatter.title}</h1>
         <div className="flex items-center gap-2">
           {saveState === "saved" ? (
@@ -105,14 +105,14 @@ export function PageEditor({ page, embed }: PageEditorProps) {
       </div>
 
       <Tabs defaultValue="visualizar">
-        <TabsList>
+        <TabsList className="print:hidden">
           <TabsTrigger value="visualizar">Visualizar</TabsTrigger>
           <TabsTrigger value="editar">Editar</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="visualizar" className="pt-4">
+        <TabsContent value="visualizar" className="pt-4 print:pt-0">
           <div className="flex flex-col gap-6">
-            <MarkdownView content={content} />
+            {content.trim() ? <MarkdownView content={content} /> : null}
             {embed}
           </div>
         </TabsContent>

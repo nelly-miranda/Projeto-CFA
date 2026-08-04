@@ -11,7 +11,7 @@ export function Header() {
   const breadcrumb = getBreadcrumb(slug);
 
   return (
-    <header className="flex items-center justify-between gap-2 border-b border-neutral-200 px-6 py-4 text-sm text-muted-foreground dark:border-neutral-800 md:px-10">
+    <header className="flex items-center justify-between gap-2 border-b border-neutral-200 px-6 py-4 text-sm text-muted-foreground print:hidden dark:border-neutral-800 md:px-10">
       <div className="flex items-center gap-2">
         {breadcrumb.length === 0 ? (
           <span className="font-medium text-foreground">Programa CFA/CRAs</span>
