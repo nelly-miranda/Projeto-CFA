@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+*.tsbuildinfo
+
+# Local Claude Code settings (machine-specific)
+.claude/settings.local.json
+**/.claude/settings.local.json
+**/.claude/scheduled_tasks.lock
+
+# Env files
+.env
+.env.local
+.env*.local
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temp/scratch files
+pw-home2.tmp.js

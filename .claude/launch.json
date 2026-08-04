@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cfa-webapp-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "CFA/webapp", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "cfa-webapp-storybook",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "CFA/webapp", "run", "storybook"],
+      "port": 6006
+    }
+  ]
+}
