@@ -1,0 +1,1691 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Financeiro GovTech</title>
+<meta name="description" content="Painel gerencial: controle financeiro, portfólio de vendas e simulador de cenários do Programa Governo Digital Inteligente, Traevo">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14142B; --ink-2:#3A3A3A; --ink-3:#8A8A8A; --ink-4:#B3B3B3;
+  --line:#E3E3E3; --line-strong:#14142B;
+  --bg:#F7F3EA; --surface:#FFFFFF; --surface-2:#F2EEE3; --panel:#14142B; --panel-ink:#FFFFFF; --fill:#14142B; --fill-ink:#FFFFFF;
+  --bar:#D9A441; --bar-mid:#8A8A8A; --bar-track:#E3E3E3;
+  --panel-dim:#8A8A8A; --panel-mid:#C4C4C4; --panel-hover:rgba(217,164,65,0.14); --panel-line:rgba(255,255,255,0.12);
+  --line-hover:#B5B5B5;
+  --good:#1F6A44; --good-bg:#E9F3EC; --bad:#8A2E1E; --bad-bg:#F6E9E6;
+  --shadow-1:0 1px 2px rgba(0,0,0,.05),0 2px 6px -1px rgba(0,0,0,.07);
+  --shadow-2:0 2px 4px rgba(0,0,0,.05),0 14px 30px -8px rgba(0,0,0,.18);
+  --shadow-panel:0 10px 28px -10px rgba(0,0,0,.45);
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:light;
+}
+:root:not([data-theme="light"]){ }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#F7F3EA; --ink-2:#D2D2D2; --ink-3:#9A9A9A; --ink-4:#6E6E6E;
+    --line:#2C2C2C; --line-strong:#F7F3EA;
+    --bg:#14142B; --surface:#1F1F3D; --surface-2:#262646; --panel:#1F1F3D; --panel-ink:#F7F3EA; --fill:#F7F3EA; --fill-ink:#14142B;
+    --bar:#D9A441; --bar-mid:#8A8A8A; --bar-track:#2A2A45;
+    --panel-dim:#8A8A8A; --panel-mid:#B0B0B0; --panel-hover:rgba(217,164,65,0.10); --panel-line:rgba(255,255,255,0.10);
+    --line-hover:#4A4A4A;
+    --good:#4CAE7F; --good-bg:#12291E; --bad:#D97A65; --bad-bg:#2E1712;
+    --shadow-1:inset 0 1px 0 rgba(255,255,255,.04),0 2px 8px -2px rgba(0,0,0,.6);
+    --shadow-2:inset 0 1px 0 rgba(255,255,255,.06),0 16px 34px -10px rgba(0,0,0,.85);
+    --shadow-panel:inset 0 1px 0 rgba(255,255,255,.06),0 12px 30px -10px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F7F3EA; --ink-2:#D2D2D2; --ink-3:#9A9A9A; --ink-4:#6E6E6E;
+  --line:#2C2C2C; --line-strong:#F7F3EA;
+  --bg:#14142B; --surface:#1F1F3D; --surface-2:#262646; --panel:#1F1F3D; --panel-ink:#F7F3EA; --fill:#F7F3EA; --fill-ink:#14142B;
+  --bar:#D9A441; --bar-mid:#8A8A8A; --bar-track:#2A2A45;
+  --panel-dim:#8A8A8A; --panel-mid:#B0B0B0; --panel-hover:rgba(217,164,65,0.10); --panel-line:rgba(255,255,255,0.10);
+  --line-hover:#4A4A4A;
+  --good:#4CAE7F; --good-bg:#12291E; --bad:#D97A65; --bad-bg:#2E1712;
+  --shadow-1:inset 0 1px 0 rgba(255,255,255,.04),0 2px 8px -2px rgba(0,0,0,.6);
+  --shadow-2:inset 0 1px 0 rgba(255,255,255,.06),0 16px 34px -10px rgba(0,0,0,.85);
+  --shadow-panel:inset 0 1px 0 rgba(255,255,255,.06),0 12px 30px -10px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+html,body{background:var(--bg);}
+body{font-family:'Inter',Arial,sans-serif;display:flex;min-height:100vh;margin:0;background:var(--bg);color:var(--ink-2);transition:background .25s,color .25s;}
+::selection{background:var(--surface-2);color:var(--ink);}
+
+.sidebar{width:272px;flex-shrink:0;background:var(--panel);box-shadow:1px 0 0 var(--panel-line),6px 0 24px -12px rgba(0,0,0,.35);color:var(--panel-ink);position:sticky;top:0;height:100vh;
+  overflow-y:auto;display:flex;flex-direction:column;padding:30px 20px;gap:24px;}
+.brand{padding:0 8px 18px;border-bottom:1px solid var(--panel-line);}
+.brand-kicker{font-size:9.5px;font-weight:700;letter-spacing:2.2px;color:var(--panel-dim);text-transform:uppercase;margin-bottom:14px;}
+.wordmark{font-weight:800;font-size:22px;letter-spacing:3px;color:var(--panel-ink);line-height:1;}
+.wordmark small{display:block;font-size:9.5px;font-weight:600;letter-spacing:4.2px;color:var(--panel-mid);margin-top:7px;}
+.brand-date{font-size:11px;color:var(--panel-dim);margin-top:12px;}
+.nav{display:flex;flex-direction:column;gap:1px;}
+.nav-group-label{font-size:9.5px;font-weight:700;letter-spacing:2px;color:var(--panel-dim);text-transform:uppercase;padding:14px 12px 6px;}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:6px;cursor:pointer;
+  color:var(--panel-mid);font-weight:500;font-size:13px;border-left:2px solid transparent;transition:background .18s,color .18s,padding .18s var(--ease);}
+.nav-item:hover{background:var(--panel-hover);color:var(--panel-ink);}
+.nav-item.active{background:var(--panel-hover);color:var(--panel-ink);font-weight:600;border-left:2px solid var(--panel-ink);padding-left:15px;}
+.nav-item .dot{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.45;flex-shrink:0;}
+.themetoggle{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  background:transparent;border:1px solid var(--panel-line);color:var(--panel-mid);border-radius:8px;
+  padding:9px 12px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background .14s,color .14s;}
+.themetoggle:hover{background:var(--panel-hover);color:var(--panel-ink);}
+.themetoggle .tt-icon{font-size:13px;line-height:1;}
+.savestate{font-size:10.5px;color:var(--panel-dim);display:flex;align-items:center;gap:6px;}
+.savestate .dot2{width:6px;height:6px;border-radius:50%;background:var(--good);flex-shrink:0;}
+.savestate.off .dot2{background:var(--ink-4);}
+
+.main{flex:1;min-width:0;padding:52px 60px 110px;max-width:1180px;margin-inline:auto;width:100%;}
+.view{display:none;}
+.view.active{display:block;animation:fade .3s var(--ease);}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes grow{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+
+.doc-kicker{font-size:11.5px;font-weight:700;letter-spacing:3px;color:var(--ink);text-transform:uppercase;}
+.doc-title{font-size:34px;font-weight:700;letter-spacing:-1px;color:var(--ink);margin:8px 0 6px;text-wrap:balance;line-height:1.15;max-width:32ch;}
+.doc-lede{font-size:15.5px;color:var(--ink-3);max-width:72ch;line-height:1.62;}
+h2.sec{font-size:18px;font-weight:800;color:var(--ink);margin:44px 0 14px;padding-bottom:9px;border-bottom:2px solid var(--ink);}
+h3.sub{font-size:14px;font-weight:700;color:var(--ink);margin:24px 0 8px;}
+p{line-height:1.65;font-size:14.5px;max-width:72ch;}
+small.note{display:block;font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.55;max-width:76ch;}
+
+.pull-quote{font-size:18px;font-weight:600;color:var(--ink);
+  border-left:4px solid var(--ink);padding:4px 0 4px 20px;margin:26px 0;max-width:60ch;text-wrap:balance;}
+.callout{background:var(--surface);color:var(--ink-2);border:1px solid var(--line);border-left:4px solid var(--ink);padding:16px 20px;font-size:14px;line-height:1.62;margin:20px 0;border-radius:0 10px 10px 0;box-shadow:var(--shadow-1);}
+.callout b{color:var(--ink);}
+
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));background:var(--surface);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:22px 0 8px;box-shadow:var(--shadow-1);}
+.stat-row-3{grid-template-columns:repeat(3,1fr);}
+.stat{background:var(--surface);padding:20px 20px 18px;box-shadow:1px 0 0 var(--line),0 1px 0 var(--line);transition:background .2s;min-width:0;}
+.stat:hover{background:var(--surface-2);}
+.stat-num{font-size:clamp(17px,1.6vw,25px);font-weight:700;letter-spacing:-0.5px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:clip;}
+.stat-num.accent::after{content:"";display:block;width:26px;height:2px;background:var(--ink);margin-top:8px;}
+.stat-label{font-size:11.5px;color:var(--ink-3);margin-top:5px;font-weight:600;line-height:1.4;}
+
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;letter-spacing:.4px;
+  padding:4px 9px;border-radius:4px;text-transform:uppercase;white-space:nowrap;border:1px solid transparent;}
+.pill.ok{background:var(--fill);color:var(--fill-ink);}
+.pill.crit{background:transparent;color:var(--ink);border:1.5px solid var(--ink);}
+.pill.warn{background:var(--surface-2);color:var(--ink);border:1px solid var(--line-hover);}
+.pill.idle{background:transparent;color:var(--ink-3);border:1px dashed var(--ink-3);}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px;margin:20px 0;}
+.pcard{border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:12px;padding:18px 20px 20px;background:var(--surface);min-width:0;
+  box-shadow:var(--shadow-1);transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s;}
+.pcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-2);border-color:var(--line-hover);border-top-color:var(--ink);}
+.pcard p{color:var(--ink-2);font-size:13.5px;margin:0;line-height:1.62;}
+.pcard-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:2px;flex-wrap:wrap;}
+.pcard-name{font-weight:800;color:var(--ink);font-size:14.5px;}
+.pcard-meta{font-size:12px;color:var(--ink-3);font-weight:500;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+.pcard-big{font-size:24px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;margin:2px 0 10px;white-space:nowrap;}
+
+.chart{margin:18px 0 6px;}
+.chart-title{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.chart-sub{font-size:11.5px;color:var(--ink-3);margin-bottom:12px;}
+.bar-row{display:grid;grid-template-columns:minmax(120px,210px) 1fr auto;align-items:center;gap:12px;padding:3px 0;}
+.bar-lab{font-size:12.5px;color:var(--ink-2);line-height:1.35;}
+.bar-track{background:var(--bar-track);border-radius:4px;height:14px;position:relative;overflow:hidden;}
+.bar-fill{background:var(--bar-mid);height:100%;border-radius:0 4px 4px 0;min-width:2px;transform-origin:left center;transition:width .4s var(--ease);}
+.bar-fill.focus{background:var(--bar);}
+.bar-val{font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2);min-width:88px;text-align:right;font-weight:600;}
+.bar-val span{color:var(--ink-3);font-weight:500;font-size:11.5px;}
+
+.tablewrap{width:100%;overflow-x:auto;margin:16px 0;padding:1px 1px 10px;}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-1);}
+tbody tr td{transition:background .15s;}
+tbody tr:hover td{background:var(--surface-2);}
+th{background:var(--panel);color:var(--panel-ink);text-align:left;padding:9px 12px;font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;white-space:nowrap;}
+th:first-child{border-radius:9px 0 0 0;}
+th:last-child{border-radius:0 9px 0 0;}
+td{padding:8px 12px;border-bottom:1px solid var(--line);color:var(--ink-2);vertical-align:middle;line-height:1.5;}
+td b{color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+.num-cell{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap;}
+tr.dim td{color:var(--ink-3);}
+tr.total td{background:var(--surface-2);font-weight:700;color:var(--ink);}
+
+.totalbar{background:var(--panel);border-radius:12px;padding:18px 24px;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:10px;margin:22px 0;box-shadow:var(--shadow-panel);}
+.totalbar .tb-label{color:var(--panel-mid);font-size:13px;font-weight:600;max-width:66ch;line-height:1.5;}
+.totalbar .tb-value{color:var(--panel-ink);font-weight:800;font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+.nucleo{list-style:none;margin:16px 0;padding:0;}
+.nucleo li{display:flex;gap:14px;font-size:14px;padding:13px 0;border-bottom:1px solid var(--line);}
+.nucleo li:last-child{border-bottom:none;}
+.nucleo .num{color:var(--ink-3);font-weight:700;font-size:13px;flex-shrink:0;width:22px;}
+.nucleo .body b{color:var(--ink);display:block;margin-bottom:2px;font-size:14px;}
+.nucleo .body span{color:var(--ink-3);font-size:13px;line-height:1.55;}
+
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:11px;font-weight:600;color:var(--ink-3);text-transform:uppercase;letter-spacing:.4px;}
+.field input,.field select{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;font-variant-numeric:tabular-nums;}
+.field input:focus,.field select:focus{outline:none;border-color:var(--ink);}
+.field-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:18px 0;}
+.field-hint{font-size:11px;color:var(--ink-4);}
+
+.btn{font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.3px;border-radius:7px;padding:9px 16px;cursor:pointer;border:1px solid var(--ink);background:var(--fill);color:var(--fill-ink);transition:opacity .15s;}
+.btn:hover{opacity:.82;}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-hover);}
+.btn.ghost:hover{background:var(--surface-2);opacity:1;}
+.btn.danger{background:transparent;color:var(--ink-3);border:1px dashed var(--ink-4);font-weight:600;padding:5px 10px;font-size:11.5px;}
+.btn.danger:hover{color:var(--ink);border-color:var(--ink-3);opacity:1;}
+.btn:disabled{opacity:.35;cursor:not-allowed;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;}
+
+.slider-row{display:flex;flex-direction:column;gap:8px;margin:18px 0;}
+.slider-row .slabel{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--ink-2);}
+.slider-row .slabel b{color:var(--ink);font-variant-numeric:tabular-nums;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--bar-track);border-radius:2px;outline:none;margin:4px 0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--ink);cursor:pointer;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--ink);}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--ink);cursor:pointer;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--ink);}
+
+.chip-row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 22px;}
+.chip{font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;}
+.chip:hover{border-color:var(--line-hover);}
+.chip.active{background:var(--fill);color:var(--fill-ink);border-color:var(--fill);}
+
+.editable td input,.editable td select{width:100%;border:none;background:transparent;font-family:'Inter',sans-serif;font-size:13px;color:var(--ink-2);padding:4px 2px;font-variant-numeric:tabular-nums;}
+.editable td input:focus,.editable td select:focus{outline:none;background:var(--surface-2);border-radius:4px;}
+.row-del{cursor:pointer;color:var(--ink-4);font-size:15px;line-height:1;padding:3px 8px;border-radius:4px;border:1px solid transparent;}
+.row-del:hover{color:var(--ink);background:var(--surface-2);border-color:var(--line);}
+
+.empty-state{border:1px dashed var(--line-hover);border-radius:12px;padding:34px 20px;text-align:center;color:var(--ink-3);font-size:13.5px;margin:20px 0;}
+
+.kv-mini{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 0;border-bottom:1px solid var(--line);}
+.kv-mini:last-child{border-bottom:none;}
+.kv-mini span:first-child{color:var(--ink-3);}
+.kv-mini span:last-child{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums;}
+
+@media (prefers-reduced-motion:reduce){ *,*::before,*::after{animation:none !important;transition:none !important;} .pcard:hover{transform:none;} }
+
+@media (max-width:900px){
+  body{flex-direction:column;}
+  .sidebar{position:relative;width:100%;height:auto;padding:22px 16px;}
+  .main{padding:34px 16px 70px;}
+  .doc-title{font-size:26px;max-width:none;}
+  .bar-row{grid-template-columns:1fr;gap:3px;}
+  .bar-val{text-align:left;}
+  .card-grid{grid-template-columns:1fr;}
+  .stat-row{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));}
+  .stat-row-3{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:520px){
+  .stat-row-3{grid-template-columns:1fr;}
+}
+
+/* ---- assistente de proposta (wizard) ---- */
+.wizard-overlay{position:fixed;inset:0;background:rgba(20,20,43,.72);display:none;align-items:center;justify-content:center;z-index:500;padding:24px;}
+.wizard-overlay.active{display:flex;}
+.wizard-modal{background:var(--surface);border-radius:16px;width:100%;max-width:880px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-2);padding:32px 36px 26px;position:relative;}
+.wizard-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;}
+.wizard-title{font-size:20px;font-weight:800;color:var(--ink);}
+.wizard-close{background:transparent;border:1px solid var(--line-hover);color:var(--ink-3);width:30px;height:30px;border-radius:50%;font-size:16px;line-height:1;cursor:pointer;flex-shrink:0;font-family:'Inter',sans-serif;}
+.wizard-close:hover{color:var(--ink);border-color:var(--ink);}
+.wizard-progress-row{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-3);margin-top:18px;}
+.wizard-progress-track{background:var(--bar-track);border-radius:3px;height:5px;margin-top:8px;overflow:hidden;}
+.wizard-progress-fill{background:var(--bar);height:100%;border-radius:3px;transition:width .3s var(--ease);}
+.wizard-body{display:grid;grid-template-columns:1fr 1.3fr;gap:32px;margin:32px 0 8px;align-items:start;}
+.wizard-body.full{grid-template-columns:1fr;}
+.wizard-q-title{font-size:22px;font-weight:700;color:var(--ink);line-height:1.3;}
+.wizard-q-support{font-size:13.5px;color:var(--ink-3);margin-top:10px;line-height:1.6;max-width:40ch;}
+.wizard-answer{display:flex;flex-direction:column;gap:14px;}
+.wizard-shortcut-hint{font-size:11px;color:var(--ink-4);}
+.wizard-foot{display:flex;justify-content:space-between;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);}
+.wizard-fillall-row{text-align:center;margin-top:14px;}
+.wizard-fillall-btn{background:transparent;border:none;color:var(--ink-3);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.wizard-fillall-btn:hover{color:var(--ink);text-decoration:underline;}
+.wizard-partial-total{margin-top:8px;border-top:1px dashed var(--line-hover);padding-top:14px;font-size:12.5px;color:var(--ink-2);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.wizard-partial-total b{color:var(--ink);font-variant-numeric:tabular-nums;}
+.wizard-list-item{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+.wizard-list-item input,.wizard-list-item select{font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:7px 9px;}
+.wizard-fillall-block{border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:24px;}
+.wizard-fillall-block:last-child{border-bottom:none;}
+.wizard-modal .field input:focus,.wizard-modal .field select:focus,.wizard-modal .wizard-list-item input:focus,.wizard-modal .wizard-list-item select:focus{outline:none;border-color:var(--bar);box-shadow:0 0 0 3px rgba(217,164,65,.16);}
+@media (max-width:760px){ .wizard-body{grid-template-columns:1fr;} .wizard-modal{padding:24px 20px 20px;} }
+</style>
+
+<div class="sidebar">
+  <div class="brand">
+    <div class="brand-kicker">Traevo · Governo Digital Inteligente</div>
+    <div class="wordmark">GOVTECH<small>FINANCEIRO</small></div>
+    <div class="brand-date" id="brandDate"></div>
+  </div>
+  <div class="nav">
+    <div class="nav-group-label">Proposta</div>
+    <div class="nav-item" id="navNovaProposta" data-view="nova-proposta"><span class="dot"></span>Nova proposta</div>
+    <div class="nav-group-label">Visão geral</div>
+    <div class="nav-item active" data-view="painel"><span class="dot"></span>Painel</div>
+    <div class="nav-group-label">Modelo do contrato</div>
+    <div class="nav-item" data-view="premissas"><span class="dot"></span>Premissas editáveis</div>
+    <div class="nav-item" data-view="referencia"><span class="dot"></span>Propostas geradas</div>
+    <div class="nav-group-label">Projeções</div>
+    <div class="nav-item" data-view="simulador"><span class="dot"></span>Simulador de crescimento</div>
+    <div class="nav-item" data-view="recorrencia"><span class="dot"></span>Receita recorrente</div>
+    <div class="nav-group-label">Vendas</div>
+    <div class="nav-item" data-view="portfolio"><span class="dot"></span>Portfólio de projetos</div>
+    <div class="nav-item" data-view="proposta-pronta"><span class="dot"></span>Propostas</div>
+  </div>
+  <div class="savestate" id="saveState"><span class="dot2"></span><span id="saveStateText">Conectando ao armazenamento…</span></div>
+  <button class="themetoggle" id="themeToggle" type="button" aria-pressed="false">
+    <span id="themeLabel">Tema claro</span><span class="tt-icon" id="themeIcon" aria-hidden="true">&#9680;</span>
+  </button>
+</div>
+
+<div class="wizard-overlay" id="wizardOverlay">
+  <div class="wizard-modal" id="wizardModal">
+    <div class="wizard-head">
+      <div class="wizard-title">Nova proposta comercial</div>
+      <button class="wizard-close" id="wizardClose" type="button" aria-label="Fechar">&times;</button>
+    </div>
+    <div class="wizard-progress-row"><span id="wizardBlockLabel">BLOCO 1 DE 5</span><span id="wizardAnsweredLabel">0 respondidas</span></div>
+    <div class="wizard-progress-track"><div class="wizard-progress-fill" id="wizardProgressFill" style="width:20%"></div></div>
+
+    <div class="wizard-body" id="wizardBody"></div>
+
+    <div class="wizard-foot" id="wizardFoot">
+      <button class="btn ghost" id="wizardBack" type="button">&larr; Voltar</button>
+      <button class="btn ghost" id="wizardSkip" type="button">Seguir &rarr;</button>
+    </div>
+    <div class="wizard-fillall-row"><button class="wizard-fillall-btn" id="wizardFillAll" type="button">&#9776; Preencher tudo de uma vez</button></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ============ PAINEL ============ -->
+<section class="view active" id="painel">
+  <div class="doc-kicker">Painel gerencial</div>
+  <h1 class="doc-title">Visão consolidada do Programa Governo Digital Inteligente</h1>
+  <p class="doc-lede">Panorama do portfólio de projetos para apoiar a decisão dos sócios: quanto está contratado, quanto está em pipeline, e qual a saúde financeira do conjunto. Os números recalculam a cada mudança nas Premissas ou no portfólio.</p>
+
+  <h2 class="sec">Indicadores do portfólio</h2>
+  <div class="stat-row" id="painelStats"></div>
+
+  <h2 class="sec">Estrutura de custo por projeto</h2>
+  <div class="card-grid" id="painelCards"></div>
+
+  <h2 class="sec">Projetos: status e resultado</h2>
+  <div class="tablewrap"><table id="painelPortfolioTable"></table></div>
+  <small class="note">Lista completa, com edição de valores e status, na aba <b>Portfólio de projetos</b>. Os números deste painel recalculam a cada mudança nas <b>Premissas</b> ou no portfólio, inclusive quando outro sócio edita ao mesmo tempo.</small>
+</section>
+
+<!-- ============ NOVA PROPOSTA ============ -->
+<section class="view" id="nova-proposta">
+  <div class="doc-kicker">Proposta</div>
+  <h1 class="doc-title">Criar uma nova proposta comercial</h1>
+  <p class="doc-lede">O assistente pede, em blocos: licenciamento dos sistemas, consultoria, equipe alocada, itens extras e um resumo final para confirmar antes de gerar a proposta.</p>
+
+  <div class="btn-row"><button class="btn" id="btnAbrirWizard" type="button">+ Criar nova proposta</button></div>
+
+  <p id="novaPropostaResumo"></p>
+</section>
+
+<!-- ============ PREMISSAS ============ -->
+<section class="view" id="premissas">
+  <div class="doc-kicker">Modelo do contrato</div>
+  <h1 class="doc-title">Premissas: a base de custo e receita por conselho</h1>
+  <p class="doc-lede">Modelo padrão de precificação do programa. Qualquer campo aqui é editável pelos sócios e recalcula automaticamente o projeto de referência, o simulador de crescimento e a receita recorrente.</p>
+
+  <h2 class="sec">A. Receita de contrato</h2>
+  <div class="field-grid">
+    <div class="field"><label for="inSetup">Setup: pagamento único (R$)</label><input id="inSetup" type="text" inputmode="decimal" placeholder="R$ 0,00"></div>
+    <div class="field"><label for="inBancoHoras">Banco de horas: horas potenciais</label><input id="inBancoHoras" type="number" step="1" min="0"></div>
+    <div class="field"><label for="inBancoValorHora">Banco de horas: valor/hora (R$)</label><input id="inBancoValorHora" type="text" inputmode="decimal" placeholder="R$ 0,00"></div>
+  </div>
+  <small class="note">O banco de horas é receita potencial, sob demanda e aprovação prévia do conselho. Não entra na receita garantida nem no resultado do projeto.</small>
+
+  <h3 class="sub">Etapas de pagamento do setup</h3>
+  <div class="tablewrap"><table class="editable" id="etapasTable"></table></div>
+  <div class="btn-row"><small class="field-hint" id="etapasSomaNote"></small></div>
+
+  <h2 class="sec">B. Licenciamento anual</h2>
+  <div class="tablewrap"><table class="editable" id="licencasTable"></table></div>
+  <div class="btn-row"><button class="btn ghost" id="btnAddLicenca" type="button">+ Novo item de licença</button></div>
+
+  <h2 class="sec">C. Equipe por projeto (custo de implantação)</h2>
+  <div class="tablewrap"><table class="editable" id="equipeTable"></table></div>
+  <div class="btn-row"><button class="btn ghost" id="btnAddCargo" type="button">+ Novo cargo</button></div>
+
+  <h2 class="sec">D. Impostos (Lucro Presumido)</h2>
+  <div class="field-grid">
+    <div class="field"><label for="inIrpj">IRPJ (%)</label><input id="inIrpj" type="number" step="0.1" min="0"></div>
+    <div class="field"><label for="inIrpjBase">Base de presunção IRPJ (%)</label><input id="inIrpjBase" type="number" step="1" min="0"></div>
+    <div class="field"><label for="inCsll">CSLL (%)</label><input id="inCsll" type="number" step="0.1" min="0"></div>
+    <div class="field"><label for="inCsllBase">Base de presunção CSLL (%)</label><input id="inCsllBase" type="number" step="1" min="0"></div>
+    <div class="field"><label for="inPis">PIS (%)</label><input id="inPis" type="number" step="0.01" min="0"></div>
+    <div class="field"><label for="inCofins">COFINS (%)</label><input id="inCofins" type="number" step="0.01" min="0"></div>
+    <div class="field"><label for="inIss">ISS (%)</label><input id="inIss" type="number" step="0.1" min="0"></div>
+  </div>
+  <small class="note">Carga tributária efetiva sobre a receita garantida: <b id="cargaEfetivaLabel"></b>. IRPJ e CSLL incidem sobre a base de presunção (serviços); PIS, COFINS e ISS incidem sobre a receita bruta total.</small>
+
+  <h2 class="sec">E. Distribuição do resultado</h2>
+  <h3 class="sub">Repasses a parceiros (% da receita, custo do projeto)</h3>
+  <div class="tablewrap"><table class="editable" id="repassesTable"></table></div>
+  <div class="btn-row"><button class="btn ghost" id="btnAddRepasse" type="button">+ Novo repasse</button></div>
+  <small class="note">Cada linha é um parceiro que recebe repasse sobre a receita do projeto: FADEX ou qualquer outra entidade parceira. Entram como custo do projeto, igual à planilha.</small>
+
+  <div class="field-grid">
+    <div class="field"><label for="inOverhead">Overhead e administração (% da receita)</label><input id="inOverhead" type="number" step="0.1" min="0"></div>
+    <div class="field"><label for="inProvisao">Provisão para imprevistos (% da receita)</label><input id="inProvisao" type="number" step="0.1" min="0"></div>
+    <div class="field"><label for="inComissao">Comissão de parceiros (% do lucro bruto)</label><input id="inComissao" type="number" step="0.1" min="0"></div>
+  </div>
+
+  <h2 class="sec">F. Parâmetros de risco</h2>
+  <div class="field-grid">
+    <div class="field"><label for="inMargemRisco">Limite de margem de risco (%)</label><input id="inMargemRisco" type="number" step="1" min="0" max="100"></div>
+  </div>
+  <small class="note">Projetos com margem líquida abaixo deste limite são sinalizados como risco no Projeto de referência e no Portfólio de projetos.</small>
+
+  <div class="callout"><b>Como ler.</b> Todo campo escreve direto no armazenamento compartilhado do ambiente. A mudança aparece para os outros sócios em tempo real, sem precisar salvar. O restante do ambiente sempre recalcula a partir do que estiver aqui.</div>
+</section>
+
+<!-- ============ PROPOSTAS GERADAS (ex-referência) ============ -->
+<section class="view" id="referencia">
+  <div class="doc-kicker">Propostas</div>
+  <h1 class="doc-title">Propostas geradas: custo, resultado e margem de cada uma</h1>
+  <p class="doc-lede">Toda proposta criada pelo assistente "Nova proposta" cai automaticamente na lista abaixo. Clique em uma para abrir o editor completo: receitas, custos, resultado final, resumo analítico e a viabilidade de margem, calculados automaticamente como na planilha-modelo do programa.</p>
+
+  <div id="refPropostaLista"></div>
+
+  <h3 class="sub" id="refEditorTitulo">Editor de valores</h3>
+  <div class="field-grid">
+    <div class="field"><label for="refSetup">Valor de setup / pagamento único (R$)</label><input id="refSetup" type="text" inputmode="decimal" placeholder="R$ 0,00"></div>
+    <div class="field"><label for="refLicenca">Licença / receita recorrente anualizada (R$)</label><input id="refLicenca" type="text" inputmode="decimal" placeholder="R$ 0,00"></div>
+    <div class="field"><label for="refBanco">Incluir banco de horas?</label>
+      <select id="refBanco"><option value="0">Não considerar</option><option value="1">Considerar no potencial</option></select>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn ghost" id="btnRefReset" type="button">Restaurar valores padrão</button></div>
+
+  <h2 class="sec">1. Receitas do contrato</h2>
+  <div class="tablewrap"><table id="refReceitasTable"></table></div>
+
+  <h3 class="sub">Cronograma de recebimento do setup</h3>
+  <div class="tablewrap"><table id="refEtapasTable"></table></div>
+
+  <h2 class="sec">2. Custos do projeto</h2>
+  <div class="tablewrap"><table id="refCustosTable"></table></div>
+
+  <h2 class="sec">3. Resultado final</h2>
+  <div class="tablewrap"><table id="refResultadoTable"></table></div>
+
+  <h2 class="sec">4. Saúde do projeto</h2>
+  <div class="stat-row" id="refIndicadores"></div>
+
+  <h2 class="sec">5. Resumo analítico financeiro</h2>
+  <div class="callout" id="refResumoAnalitico"></div>
+
+  <h2 class="sec">6. Margem: o projeto é viável?</h2>
+  <div class="totalbar" id="refViabilidadeBar"></div>
+  <p id="refViabilidadeTexto"></p>
+</section>
+
+<!-- ============ SIMULADOR ============ -->
+<section class="view" id="simulador">
+  <div class="doc-kicker">Projeções</div>
+  <h1 class="doc-title">Simulador de crescimento: quanto vale escalar o programa</h1>
+  <p class="doc-lede">Cada conselho novo repete o mesmo contrato. O ponto de partida vem do portfólio real, na aba Portfólio de projetos, e o resto é projeção.</p>
+
+  <div class="stat-row" id="simuladorRealStats"></div>
+  <small class="note">Portfólio de hoje. Atualiza sozinho a cada conselho adicionado, removido ou mudado de status na aba <b>Portfólio de projetos</b>.</small>
+
+  <h2 class="sec">Cenários por volume de conselhos</h2>
+  <div class="chip-row" id="cenarioChips"></div>
+  <div class="slider-row">
+    <div class="slabel"><span>Número de conselhos contratados</span><b id="cenarioNLabel"></b></div>
+    <input type="range" id="cenarioSlider" min="1" max="40" step="1">
+  </div>
+
+  <div class="stat-row stat-row-3" id="cenarioStats"></div>
+
+  <div class="chart">
+    <div class="chart-title">Lucro líquido por cenário</div>
+    <div class="chart-sub">Comparado a marcos de volume (1, 6, 10, 15 e 20 conselhos)</div>
+    <div id="cenarioChart"></div>
+  </div>
+
+  <h2 class="sec">Projeção de entrada de novos conselhos</h2>
+  <p>Simule quantos conselhos ativos existem hoje e quantos novos contratos entram por ano.</p>
+  <div class="field-grid">
+    <div class="field"><label for="growInicial">Conselhos ativos no início (hoje, do portfólio)</label><input id="growInicial" type="number" step="1" min="0"></div>
+    <div class="field"><label for="growNovos">Novos conselhos por ano</label><input id="growNovos" type="number" step="1" min="0"></div>
+    <div class="field"><label for="growAnos">Anos de projeção</label><input id="growAnos" type="number" step="1" min="1" max="10"></div>
+  </div>
+
+  <div class="tablewrap"><table id="growTable"></table></div>
+
+  <div class="totalbar" id="growTotalbar"></div>
+  <small class="note">Lucro líquido do ano = lucro dos conselhos assinados naquele ano (setup, já líquido de equipe, impostos, repasses a parceiros, overhead, provisão e comissão de parceiros). A receita recorrente das licenças é mostrada à parte, na aba Receita recorrente, e não é decrementada de custos. É 100% receita da Traevo, sem divisão.</small>
+</section>
+
+<!-- ============ RECORRENCIA ============ -->
+<section class="view" id="recorrencia">
+  <div class="doc-kicker">Projeções</div>
+  <h1 class="doc-title">Receita recorrente: a anuidade de cada conselho ativo</h1>
+  <p class="doc-lede">Depois do setup, cada conselho paga licenças anuais ou mensais. É receita 100% da Traevo, sem repasses a parceiros nem comissão de parceiros, e sem novo custo de equipe.</p>
+
+  <h2 class="sec">Composição da licença por conselho</h2>
+  <div class="tablewrap"><table id="recLicencasTable"></table></div>
+
+  <h2 class="sec">Simular receita acumulada</h2>
+  <div class="slider-row">
+    <div class="slabel"><span>Conselhos ativos (hoje, do portfólio)</span><b id="recAtivosLabel"></b></div>
+    <input type="range" id="recAtivosSlider" min="1" max="40" step="1">
+  </div>
+  <div class="slider-row">
+    <div class="slabel"><span>Anos de acúmulo</span><b id="recAnosLabel"></b></div>
+    <input type="range" id="recAnosSlider" min="1" max="10" step="1">
+  </div>
+
+  <div class="stat-row" id="recStats"></div>
+
+  <div class="chart">
+    <div class="chart-title">Receita recorrente acumulada por ano</div>
+    <div class="chart-sub" id="recChartSub"></div>
+    <div id="recChart"></div>
+  </div>
+
+  <div class="callout" id="recCallout"></div>
+</section>
+
+<!-- ============ PORTFOLIO ============ -->
+<section class="view" id="portfolio">
+  <div class="doc-kicker">Vendas</div>
+  <h1 class="doc-title">Portfólio de projetos: onde está cada conselho</h1>
+  <p class="doc-lede">Cadastro compartilhado dos sócios: da prospecção à recorrência ativa. Cada linha recalcula o lucro líquido projetado a partir das Premissas atuais.</p>
+
+  <div class="totalbar" id="portfolioTotalbar"></div>
+
+  <div class="tablewrap"><table class="editable" id="portfolioTable"></table></div>
+  <div id="portfolioEmpty" class="empty-state" style="display:none;">Nenhum projeto cadastrado ainda. Use "Novo projeto" para começar o portfólio.</div>
+
+  <div class="btn-row"><button class="btn" id="btnAddProjeto" type="button">+ Novo projeto</button></div>
+
+  <small class="note">Status: Prospecção → Proposta enviada → Contrato assinado → Em implantação → Ativo (recorrência) · ou Perdido/cancelado. O lucro líquido projetado usa o valor de setup e licença de cada linha, aplicado às Premissas correntes.</small>
+</section>
+
+<!-- ============ PROPOSTA PRONTA ============ -->
+<section class="view" id="proposta-pronta">
+  <div class="doc-kicker">Vendas</div>
+  <h1 class="doc-title">Proposta pronta</h1>
+  <p class="doc-lede">Proposta comercial gerada pelo assistente "Nova proposta": licenciamento, consultoria, equipe e itens extras já consolidados, pronta para leitura.</p>
+  <div id="propostaProntaSeletor"></div>
+  <div id="propostaProntaBody"></div>
+</section>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- formatação ---------- */
+function fmtBRL(n){ if(!isFinite(n)) n=0; var s=Math.abs(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); return (n<0?'-':'')+'R$ '+s; }
+function fmtBRL0(n){ if(!isFinite(n)) n=0; var s=Math.abs(n).toLocaleString('pt-BR',{maximumFractionDigits:0}); return (n<0?'-':'')+'R$ '+s; }
+function fmtPct(n,d){ if(!isFinite(n)) n=0; return n.toLocaleString('pt-BR',{minimumFractionDigits:d==null?1:d,maximumFractionDigits:d==null?1:d})+'%'; }
+function fmtNum(n){ if(!isFinite(n)) n=0; return n.toLocaleString('pt-BR'); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function clamp(n,a,b){ return Math.max(a,Math.min(b,n)); }
+
+/* ---------- máscara de moeda (campos de valor do wizard) ---------- */
+function maskBRLInput(el){
+  var raw = el.value.replace(/\D/g,'');
+  if(!raw){ el.value=''; return 0; }
+  var n = parseInt(raw,10)/100;
+  el.value = fmtBRL(n);
+  return n;
+}
+function parseBRLInput(el){
+  var raw = el.value.replace(/\D/g,'');
+  return raw ? parseInt(raw,10)/100 : 0;
+}
+function brlValAttr(n){
+  n = Number(n)||0;
+  return n>0 ? ' value="'+esc(fmtBRL(n))+'"' : '';
+}
+
+/* ---------- premissas padrão (seed) ---------- */
+var DEFAULTS = {
+  setup: 253972.20,
+  bancoHorasHoras: 200,
+  bancoHorasValorHora: 320,
+  etapas: [
+    {nome:"Instalação, configuração e parametrização dos módulos", pct:20, prazo:"20 dias corridos após OS"},
+    {nome:"Consultoria de mapeamento de processos de todos os setores", pct:30, prazo:"60 dias corridos após Etapa 1"},
+    {nome:"Implantação nos setores + IA por setor + Telefonia", pct:30, prazo:"120 dias corridos após Etapa 2"},
+    {nome:"Capacitação, treinamento e aceite definitivo", pct:20, prazo:"60 dias corridos após Etapa 3"}
+  ],
+  licencas: [
+    {item:"Bitrix24 PRO (100 usuários)", anual:13428, periodicidade:"Anual (renova no mês 13)"},
+    {item:"WhatsApp Business API", anual:5400, periodicidade:"Mensal após o 1º ano"},
+    {item:"Módulo IA integrado ao CRM (AssistPro)", anual:15960, periodicidade:"Mensal após o 1º ano"},
+    {item:"Telefonia IP (50 ramais ilimitados)", anual:13548, periodicidade:"Mensal após o 1º ano"},
+    {item:"Suporte Técnico e Manutenção", anual:0, periodicidade:"Incluso no contrato"}
+  ],
+  equipe: [
+    {cargo:"Desenvolvedor Sênior (IA AssistPro)", salario:4100, meses:4},
+    {cargo:"Gerente de Projeto", salario:0, meses:8},
+    {cargo:"Consultor Sênior Bitrix24 (todos os módulos)", salario:3400, meses:6},
+    {cargo:"Consultor Pleno (apoio implantação)", salario:1850, meses:6},
+    {cargo:"Analista de Processos (AS-IS / TO-BE)", salario:4000, meses:2},
+    {cargo:"Capacitação e Treinamento", salario:1850, meses:2}
+  ],
+  irpj:15, irpjBase:32, csll:9, csllBase:32, pis:1, cofins:3, iss:5,
+  repasses: [
+    {nome:"FADEX", pct:10}
+  ],
+  overhead:5, provisao:3, comissaoParceiros:15,
+  margemRisco:30
+};
+
+/* ---------- proposta comercial (assistente) ---------- */
+/* Fonte dos planos Bitrix24: bitrix24.com.br/prices, consulta em 23/09/2026. Revalidar periodicamente. */
+var BITRIX24_PLANOS = [
+  {id:'prof_vibe', label:'Professional Vibe+ (100 usuários), R$ 2.199/mês (ou R$ 1.320/mês no plano anual)', mensal:2199, anualMensal:1320},
+  {id:'enterprise', label:'Enterprise (a partir de 250 usuários), R$ 3.199/mês, valor da faixa inicial, ajustável depois (escalonado até R$ 63.999/mês conforme faixa)', mensal:3199, anualMensal:3199},
+  {id:'enterprise_vibe', label:'Enterprise Vibe+ (a partir de 250 usuários), R$ 4.399/mês (escalonado até R$ 88.999/mês)', mensal:4399, anualMensal:4399}
+];
+
+var STATUS_META = {
+  prospeccao:{label:"Prospecção", pill:"idle"},
+  proposta:{label:"Proposta enviada", pill:"warn"},
+  contrato:{label:"Contrato assinado", pill:"ok"},
+  implantacao:{label:"Em implantação", pill:"warn"},
+  ativo:{label:"Ativo (recorrência)", pill:"ok"},
+  perdido:{label:"Perdido / cancelado", pill:"crit"}
+};
+var STATUS_ORDER = ["prospeccao","proposta","contrato","implantacao","ativo","perdido"];
+
+/* ---------- estado ---------- */
+var STATE = {
+  premissas: JSON.parse(JSON.stringify(DEFAULTS)),
+  projetos: [], // {id, ...campos}
+  propostas: [], // {id, criadoEm, bitrix24PlanoId, whatsapp, ia, telefonia, suporte, bancoDados, consultoria[], equipe[], extras[], valorMensalTotal, valorAnualTotal}
+  dbReady: false,
+  canWrite: false
+};
+
+var db = null;
+var premissasRef = null;
+var projetosCol = null;
+var propostasCol = null;
+
+/* ---------- motor de cálculo ---------- */
+function cargaTributaria(p){
+  return (p.irpj/100)*(p.irpjBase/100) + (p.csll/100)*(p.csllBase/100) + p.pis/100 + p.cofins/100 + p.iss/100;
+}
+function licencaAnualTotal(p){
+  return (p.licencas||[]).reduce(function(s,l){ return s + (Number(l.anual)||0); }, 0);
+}
+function custoEquipeTotal(p){
+  return (p.equipe||[]).reduce(function(s,e){ return s + (Number(e.salario)||0) * (Number(e.meses)||0); }, 0);
+}
+function bancoHorasTotal(p){
+  return (Number(p.bancoHorasHoras)||0) * (Number(p.bancoHorasValorHora)||0);
+}
+function repassesPctTotal(p){
+  return (p.repasses||[]).reduce(function(s,r){ return s + (Number(r.pct)||0); }, 0);
+}
+function calcularProjeto(valorSetup, valorLicenca, p){
+  var receitaGarantida = (Number(valorSetup)||0) + (Number(valorLicenca)||0);
+  var equipe = custoEquipeTotal(p);
+  var carga = cargaTributaria(p);
+  var impostos = receitaGarantida * carga;
+  var repassesDetalhe = (p.repasses||[]).map(function(r){
+    return {nome:r.nome, pct:Number(r.pct)||0, valor:receitaGarantida*(Number(r.pct)||0)/100};
+  });
+  var repasses = repassesDetalhe.reduce(function(s,r){ return s + r.valor; }, 0);
+  var overhead = receitaGarantida * (p.overhead/100);
+  var provisao = receitaGarantida * (p.provisao/100);
+  var custoTotal = equipe + impostos + repasses + overhead + provisao;
+  var lucroBruto = receitaGarantida - custoTotal;
+  var comissao = lucroBruto * (p.comissaoParceiros/100);
+  var lucroLiquido = lucroBruto - comissao;
+  var margem = receitaGarantida ? lucroLiquido / receitaGarantida : 0;
+  return {
+    receitaGarantida:receitaGarantida, custoEquipe:equipe, carga:carga, impostos:impostos,
+    repasses:repasses, repassesDetalhe:repassesDetalhe, overhead:overhead, provisao:provisao, custoTotal:custoTotal,
+    lucroBruto:lucroBruto, comissao:comissao, lucroLiquido:lucroLiquido, margem:margem
+  };
+}
+
+/* ---------- render: painel ---------- */
+function renderPainel(){
+  var p = STATE.premissas;
+  var ativos = STATE.projetos.filter(function(x){ return x.status==="contrato"||x.status==="implantacao"||x.status==="ativo"; });
+  var pipeline = STATE.projetos.filter(function(x){ return x.status==="prospeccao"||x.status==="proposta"; });
+  var recorrentes = STATE.projetos.filter(function(x){ return x.status==="ativo"; });
+
+  var receitaContratada = ativos.reduce(function(s,x){ return s + (Number(x.valorSetup)||0) + (Number(x.valorLicenca)||0); }, 0);
+  var lucroTotal = ativos.reduce(function(s,x){ return s + calcularProjeto(x.valorSetup,x.valorLicenca,p).lucroLiquido; }, 0);
+  var mrr = recorrentes.reduce(function(s,x){ return s + (Number(x.valorLicenca)||0)/12; }, 0);
+  var pipelineValor = pipeline.reduce(function(s,x){ return s + (Number(x.valorSetup)||0) + (Number(x.valorLicenca)||0); }, 0);
+  var emRisco = ativos.filter(function(x){ return calcularProjeto(x.valorSetup,x.valorLicenca,p).margem < (p.margemRisco/100); }).length;
+
+  document.getElementById('painelStats').innerHTML = [
+    stat(STATE.projetos.length, 'projetos no portfólio'),
+    stat(ativos.length, 'contratados ou em implantação'),
+    stat(fmtBRL0(receitaContratada), 'receita contratada (setup + licença)'),
+    stat(fmtBRL0(lucroTotal), 'lucro líquido projetado', true),
+    stat(fmtBRL0(mrr), 'receita recorrente mensal (MRR)'),
+    stat(fmtBRL0(pipelineValor), 'em prospecção e proposta'),
+    stat(emRisco, 'projetos abaixo da margem de risco')
+  ].join('');
+
+  var carga = cargaTributaria(p);
+  var repassesPct = repassesPctTotal(p);
+  var cards = [
+    {name:'Setup por projeto', meta:'Consultoria, implantação e treinamento', big:fmtBRL0(p.setup), text:'Receita única que financia a equipe de implantação de cada projeto novo.'},
+    {name:'Licença anual (recorrência)', meta:'', big:fmtBRL0(licencaAnualTotal(p)), text:'100% receita da Traevo, sem repasses a parceiros e sem comissão. É o motor de crescimento recorrente do programa.'},
+    {name:'Custo de equipe por projeto', meta:'Time de implantação, por projeto', big:fmtBRL0(custoEquipeTotal(p)), text:'Fixo por projeto contratado, não recorre depois do aceite definitivo. Editável na aba Premissas.'},
+    {name:'Carga e distribuição', meta:'Sobre a receita garantida', big:fmtPct(carga*100,1), text:'Impostos ('+fmtPct(carga*100,1)+') + repasses a parceiros ('+fmtPct(repassesPct,0)+') + overhead ('+fmtPct(p.overhead,0)+') + provisão ('+fmtPct(p.provisao,0)+') saem antes do lucro bruto.'}
+  ];
+  document.getElementById('painelCards').innerHTML = cards.map(function(c){
+    return '<div class="pcard"><div class="pcard-head"><span class="pcard-name">'+esc(c.name)+'</span></div><div class="pcard-meta">'+esc(c.meta||'&nbsp;')+'</div><div class="pcard-big">'+c.big+'</div><p>'+esc(c.text)+'</p></div>';
+  }).join('');
+
+  var recentes = STATE.projetos.slice().sort(function(a,b){ return (b._order||0)-(a._order||0); }).slice(0,6);
+  var rows = recentes.map(function(x){
+    var r = calcularProjeto(x.valorSetup,x.valorLicenca,p);
+    var meta = STATUS_META[x.status]||STATUS_META.prospeccao;
+    return '<tr><td><b>'+esc(x.nome||'Sem nome')+'</b></td><td><span class="pill '+meta.pill+'">'+esc(meta.label)+'</span></td>'+
+      '<td class="num-cell">'+fmtBRL0(x.valorSetup)+'</td><td class="num-cell">'+fmtBRL0(x.valorLicenca)+'</td>'+
+      '<td class="num-cell">'+fmtBRL0(r.lucroLiquido)+'</td></tr>';
+  });
+  document.getElementById('painelPortfolioTable').innerHTML =
+    '<thead><tr><th>Conselho / cliente</th><th>Status</th><th class="num-cell">Setup</th><th class="num-cell">Licença anual</th><th class="num-cell">Lucro líq. projetado</th></tr></thead><tbody>'+
+    (rows.length?rows.join(''):'<tr><td colspan="5" style="color:var(--ink-3);text-align:center;">Nenhum projeto cadastrado.</td></tr>')+'</tbody>';
+}
+function stat(num, label, accent){
+  return '<div class="stat"><div class="stat-num'+(accent?' accent':'')+'">'+num+'</div><div class="stat-label">'+esc(label)+'</div></div>';
+}
+
+/* ---------- render: nova proposta ---------- */
+function renderNovaProposta(){
+  var n = STATE.propostas.length;
+  document.getElementById('novaPropostaResumo').textContent = n
+    ? 'Você já criou ' + n + ' proposta' + (n===1?'':'s') + '.'
+    : 'Nenhuma proposta criada ainda.';
+}
+
+/* ---------- render: premissas ---------- */
+var premissasInputsBound = false;
+function renderPremissas(){
+  var p = STATE.premissas;
+  setValBRL('inSetup', p.setup);
+  setVal('inBancoHoras', p.bancoHorasHoras);
+  setValBRL('inBancoValorHora', p.bancoHorasValorHora);
+  setVal('inIrpj', p.irpj); setVal('inIrpjBase', p.irpjBase);
+  setVal('inCsll', p.csll); setVal('inCsllBase', p.csllBase);
+  setVal('inPis', p.pis); setVal('inCofins', p.cofins); setVal('inIss', p.iss);
+  setVal('inOverhead', p.overhead); setVal('inProvisao', p.provisao); setVal('inComissao', p.comissaoParceiros);
+  setVal('inMargemRisco', p.margemRisco);
+  document.getElementById('cargaEfetivaLabel').textContent = fmtPct(cargaTributaria(p)*100,2);
+
+  var somaEtapas = (p.etapas||[]).reduce(function(s,e){ return s+(Number(e.pct)||0); },0);
+  document.getElementById('etapasSomaNote').textContent = 'Soma das etapas: ' + fmtPct(somaEtapas,0) + (somaEtapas!==100?'  ·  deveria somar 100%':'');
+  document.getElementById('etapasTable').innerHTML =
+    '<thead><tr><th>Etapa</th><th class="num-cell" style="width:90px">% do setup</th><th class="num-cell" style="width:130px">Valor (R$)</th><th>Prazo / entregável</th></tr></thead><tbody>'+
+    (p.etapas||[]).map(function(e,i){
+      return '<tr><td><input data-etapa-field="nome" data-i="'+i+'" type="text" value="'+esc(e.nome)+'"></td>'+
+        '<td class="num-cell"><input data-etapa-field="pct" data-i="'+i+'" type="number" step="1" min="0" max="100" value="'+e.pct+'" style="text-align:right"></td>'+
+        '<td class="num-cell">'+fmtBRL0((e.pct/100)*p.setup)+'</td>'+
+        '<td><input data-etapa-field="prazo" data-i="'+i+'" type="text" value="'+esc(e.prazo)+'"></td></tr>';
+    }).join('')+
+    '<tr class="total"><td>Total do setup</td><td class="num-cell">'+fmtPct(somaEtapas,0)+'</td><td class="num-cell">'+fmtBRL0(p.setup)+'</td><td></td></tr>'+
+    '</tbody>';
+
+  document.getElementById('licencasTable').innerHTML =
+    '<thead><tr><th>Item de licença</th><th class="num-cell" style="width:140px">Valor anual (R$)</th><th class="num-cell" style="width:120px">Mensal (R$)</th><th>Periodicidade</th><th style="width:36px"></th></tr></thead><tbody>'+
+    (p.licencas||[]).map(function(l,i){
+      return '<tr><td><input data-lic-field="item" data-i="'+i+'" type="text" value="'+esc(l.item)+'"></td>'+
+        '<td class="num-cell"><input data-lic-field="anual" data-i="'+i+'" type="number" step="0.01" min="0" value="'+l.anual+'" style="text-align:right"></td>'+
+        '<td class="num-cell">'+fmtBRL0(l.anual/12)+'</td>'+
+        '<td><input data-lic-field="periodicidade" data-i="'+i+'" type="text" value="'+esc(l.periodicidade)+'"></td>'+
+        '<td><span class="row-del" data-lic-del="'+i+'" title="Remover">&times;</span></td></tr>';
+    }).join('')+
+    '<tr class="total"><td>Total licenças anuais</td><td class="num-cell">'+fmtBRL0(licencaAnualTotal(p))+'</td><td class="num-cell">'+fmtBRL0(licencaAnualTotal(p)/12)+'</td><td colspan="2"></td></tr>'+
+    '</tbody>';
+
+  document.getElementById('equipeTable').innerHTML =
+    '<thead><tr><th>Cargo</th><th class="num-cell" style="width:140px">Salário (R$/mês)</th><th class="num-cell" style="width:80px">Meses</th><th class="num-cell" style="width:130px">Custo total (R$)</th><th style="width:36px"></th></tr></thead><tbody>'+
+    (p.equipe||[]).map(function(e,i){
+      return '<tr><td><input data-eq-field="cargo" data-i="'+i+'" type="text" value="'+esc(e.cargo)+'"></td>'+
+        '<td class="num-cell"><input data-eq-field="salario" data-i="'+i+'" type="number" step="1" min="0" value="'+e.salario+'" style="text-align:right"></td>'+
+        '<td class="num-cell"><input data-eq-field="meses" data-i="'+i+'" type="number" step="1" min="0" value="'+e.meses+'" style="text-align:right"></td>'+
+        '<td class="num-cell">'+fmtBRL0(e.salario*e.meses)+'</td>'+
+        '<td><span class="row-del" data-eq-del="'+i+'" title="Remover">&times;</span></td></tr>';
+    }).join('')+
+    '<tr class="total"><td>Total equipe por projeto</td><td colspan="2"></td><td class="num-cell">'+fmtBRL0(custoEquipeTotal(p))+'</td><td></td></tr>'+
+    '</tbody>';
+
+  document.getElementById('repassesTable').innerHTML =
+    '<thead><tr><th>Parceiro</th><th class="num-cell" style="width:120px">% da receita</th><th class="num-cell" style="width:150px">Valor sobre o projeto de referência (R$)</th><th style="width:36px"></th></tr></thead><tbody>'+
+    (p.repasses||[]).map(function(r,i){
+      return '<tr><td><input data-rep-field="nome" data-i="'+i+'" type="text" value="'+esc(r.nome)+'"></td>'+
+        '<td class="num-cell"><input data-rep-field="pct" data-i="'+i+'" type="number" step="0.1" min="0" value="'+r.pct+'" style="text-align:right"></td>'+
+        '<td class="num-cell">'+fmtBRL0((r.pct/100)*(p.setup+licencaAnualTotal(p)))+'</td>'+
+        '<td><span class="row-del" data-rep-del="'+i+'" title="Remover">&times;</span></td></tr>';
+    }).join('')+
+    '<tr class="total"><td>Total de repasses</td><td class="num-cell">'+fmtPct(repassesPctTotal(p),1)+'</td><td class="num-cell">'+fmtBRL0((repassesPctTotal(p)/100)*(p.setup+licencaAnualTotal(p)))+'</td><td></td></tr>'+
+    '</tbody>';
+
+  if(!premissasInputsBound){ bindPremissasEvents(); premissasInputsBound = true; }
+}
+function setVal(id, v){ var el=document.getElementById(id); if(el && document.activeElement!==el) el.value = v; }
+function setValBRL(id, v){ var el=document.getElementById(id); if(el && document.activeElement!==el) el.value = (Number(v)||0) ? fmtBRL(Number(v)) : ''; }
+
+function writePremissas(patch){
+  STATE.premissas = Object.assign({}, STATE.premissas, patch);
+  renderAll();
+  if(db && premissasRef && STATE.canWrite){
+    premissasRef.update(patch).catch(function(){ premissasRef.set(STATE.premissas).catch(function(){}); });
+  }
+}
+function bindPremissasEvents(){
+  var brlFields = {inSetup:1, inBancoValorHora:1};
+  function num(id){
+    var el = document.getElementById(id);
+    if(brlFields[id]) return parseBRLInput(el);
+    var v=parseFloat(el.value); return isFinite(v)?v:0;
+  }
+  ['inSetup','inBancoHoras','inBancoValorHora','inIrpj','inIrpjBase','inCsll','inCsllBase','inPis','inCofins','inIss','inOverhead','inProvisao','inComissao','inMargemRisco'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(brlFields[id]) el.addEventListener('input', function(){ maskBRLInput(this); });
+    el.addEventListener('change', function(){
+      var map = {inSetup:'setup', inBancoHoras:'bancoHorasHoras', inBancoValorHora:'bancoHorasValorHora',
+        inIrpj:'irpj', inIrpjBase:'irpjBase', inCsll:'csll', inCsllBase:'csllBase', inPis:'pis', inCofins:'cofins', inIss:'iss',
+        inOverhead:'overhead', inProvisao:'provisao', inComissao:'comissaoParceiros', inMargemRisco:'margemRisco'};
+      var patch = {}; patch[map[id]] = num(id);
+      writePremissas(patch);
+    });
+  });
+
+  document.getElementById('repassesTable').addEventListener('change', function(e){
+    var t=e.target, i=t.getAttribute('data-i'), f=t.getAttribute('data-rep-field');
+    if(i==null||!f) return;
+    var repasses = STATE.premissas.repasses.slice();
+    repasses[i] = Object.assign({}, repasses[i]);
+    repasses[i][f] = f==='pct' ? (parseFloat(t.value)||0) : t.value;
+    writePremissas({repasses:repasses});
+  });
+  document.getElementById('repassesTable').addEventListener('click', function(e){
+    var i = e.target.getAttribute && e.target.getAttribute('data-rep-del');
+    if(i==null) return;
+    var repasses = STATE.premissas.repasses.slice(); repasses.splice(i,1);
+    writePremissas({repasses:repasses});
+  });
+  document.getElementById('btnAddRepasse').addEventListener('click', function(){
+    var repasses = STATE.premissas.repasses.slice();
+    repasses.push({nome:"Novo parceiro", pct:0});
+    writePremissas({repasses:repasses});
+  });
+
+  document.getElementById('etapasTable').addEventListener('change', function(e){
+    var t=e.target, i=t.getAttribute('data-i'), f=t.getAttribute('data-etapa-field');
+    if(i==null||!f) return;
+    var etapas = STATE.premissas.etapas.slice();
+    etapas[i] = Object.assign({}, etapas[i]);
+    etapas[i][f] = f==='pct' ? (parseFloat(t.value)||0) : t.value;
+    writePremissas({etapas:etapas});
+  });
+
+  document.getElementById('licencasTable').addEventListener('change', function(e){
+    var t=e.target, i=t.getAttribute('data-i'), f=t.getAttribute('data-lic-field');
+    if(i==null||!f) return;
+    var licencas = STATE.premissas.licencas.slice();
+    licencas[i] = Object.assign({}, licencas[i]);
+    licencas[i][f] = f==='anual' ? (parseFloat(t.value)||0) : t.value;
+    writePremissas({licencas:licencas});
+  });
+  document.getElementById('licencasTable').addEventListener('click', function(e){
+    var i = e.target.getAttribute && e.target.getAttribute('data-lic-del');
+    if(i==null) return;
+    var licencas = STATE.premissas.licencas.slice(); licencas.splice(i,1);
+    writePremissas({licencas:licencas});
+  });
+  document.getElementById('btnAddLicenca').addEventListener('click', function(){
+    var licencas = STATE.premissas.licencas.slice();
+    licencas.push({item:"Novo item de licença", anual:0, periodicidade:"Anual"});
+    writePremissas({licencas:licencas});
+  });
+
+  document.getElementById('equipeTable').addEventListener('change', function(e){
+    var t=e.target, i=t.getAttribute('data-i'), f=t.getAttribute('data-eq-field');
+    if(i==null||!f) return;
+    var equipe = STATE.premissas.equipe.slice();
+    equipe[i] = Object.assign({}, equipe[i]);
+    equipe[i][f] = (f==='salario'||f==='meses') ? (parseFloat(t.value)||0) : t.value;
+    writePremissas({equipe:equipe});
+  });
+  document.getElementById('equipeTable').addEventListener('click', function(e){
+    var i = e.target.getAttribute && e.target.getAttribute('data-eq-del');
+    if(i==null) return;
+    var equipe = STATE.premissas.equipe.slice(); equipe.splice(i,1);
+    writePremissas({equipe:equipe});
+  });
+  document.getElementById('btnAddCargo').addEventListener('click', function(){
+    var equipe = STATE.premissas.equipe.slice();
+    equipe.push({cargo:"Novo cargo", salario:0, meses:1});
+    writePremissas({equipe:equipe});
+  });
+}
+
+/* ---------- render: propostas geradas (ex-referência) ---------- */
+var refState = null;
+function refValoresFromProposta(prop){
+  var t = calcPropostaTotais(prop);
+  return {setup: t.unicaTotal, licenca: t.mensalTotal*12};
+}
+function refDefaults(propostaId){
+  if(propostaId){
+    var prop = STATE.propostas.filter(function(x){ return x.id===propostaId; })[0];
+    if(prop){
+      var v = refValoresFromProposta(prop);
+      return {propostaId:propostaId, setup:v.setup, licenca:v.licenca, banco:false};
+    }
+  }
+  return {propostaId:null, setup: STATE.premissas.setup, licenca: licencaAnualTotal(STATE.premissas), banco:false};
+}
+function renderReferencia(){
+  var listaPropostas = STATE.propostas.slice().sort(function(a,b){ return (b._order||0)-(a._order||0); });
+  if(!refState) refState = listaPropostas.length ? refDefaults(listaPropostas[0].id) : refDefaults(null);
+  if(refState.propostaId && !listaPropostas.some(function(x){ return x.id===refState.propostaId; })){
+    refState = listaPropostas.length ? refDefaults(listaPropostas[0].id) : refDefaults(null);
+  }
+
+  var listaEl = document.getElementById('refPropostaLista');
+  if(!listaPropostas.length){
+    listaEl.innerHTML = '<div class="empty-state">Nenhuma proposta gerada ainda. Use "Nova proposta" na barra lateral para criar a primeira — ela aparece aqui automaticamente.</div>';
+  } else {
+    listaEl.innerHTML = '<div class="field" style="max-width:420px;margin:18px 0 8px;"><label for="refPropostaSelect">Proposta</label><select id="refPropostaSelect">'+
+      listaPropostas.map(function(x){ return '<option value="'+x.id+'"'+(x.id===refState.propostaId?' selected':'')+'>'+(x.segmento?'['+esc(x.segmento)+'] ':'')+esc(x.nome||'Proposta')+' · '+fmtDataHoraBR(x.criadoEm)+'</option>'; }).join('')+
+      '<option value=""'+(!refState.propostaId?' selected':'')+'>Rascunho livre (sem proposta salva)</option>'+
+      '</select></div>'+
+      '<small class="field-hint">Setup e licença abaixo já vêm calculados a partir dos itens dessa proposta (consultoria + itens extras únicos = setup; licenciamento mensal + extras mensais &times; 12 = licença anual). Ajuste manualmente se quiser simular outro cenário.</small>';
+    var selEl = document.getElementById('refPropostaSelect');
+    selEl.addEventListener('change', function(){ refState = refDefaults(this.value || null); renderReferencia(); });
+  }
+  document.getElementById('refEditorTitulo').textContent = refState.propostaId ? 'Editor de valores desta proposta' : 'Editor de valores (rascunho livre)';
+
+  setValBRL('refSetup', refState.setup);
+  setValBRL('refLicenca', refState.licenca);
+  document.getElementById('refBanco').value = refState.banco ? '1':'0';
+
+  var p = STATE.premissas;
+  var r = calcularProjeto(refState.setup, refState.licenca, p);
+  var banco = refState.banco ? bancoHorasTotal(p) : 0;
+
+  document.getElementById('refReceitasTable').innerHTML =
+    '<thead><tr><th>Componente de receita</th><th class="num-cell">Valor (R$)</th><th class="num-cell">% do total</th></tr></thead><tbody>'+
+    '<tr><td>Setup de implementação</td><td class="num-cell">'+fmtBRL0(refState.setup)+'</td><td class="num-cell">'+fmtPct(r.receitaGarantida?refState.setup/r.receitaGarantida*100:0,0)+'</td></tr>'+
+    '<tr><td>Licenciamento e assinaturas (anual)</td><td class="num-cell">'+fmtBRL0(refState.licenca)+'</td><td class="num-cell">'+fmtPct(r.receitaGarantida?refState.licenca/r.receitaGarantida*100:0,0)+'</td></tr>'+
+    '<tr class="total"><td>Receita total garantida</td><td class="num-cell">'+fmtBRL0(r.receitaGarantida)+'</td><td class="num-cell">100%</td></tr>'+
+    (refState.banco ? '<tr class="dim"><td>Banco de horas: receita potencial (não garantida)</td><td class="num-cell">'+fmtBRL0(banco)+'</td><td class="num-cell">·</td></tr>' : '')+
+    '</tbody>';
+
+  document.getElementById('refEtapasTable').innerHTML =
+    '<thead><tr><th>Etapa</th><th class="num-cell">% do setup</th><th class="num-cell">Valor a receber (R$)</th><th>Prazo / entregável</th></tr></thead><tbody>'+
+    p.etapas.map(function(e){ return '<tr><td>'+esc(e.nome)+'</td><td class="num-cell">'+fmtPct(e.pct,0)+'</td><td class="num-cell">'+fmtBRL0((e.pct/100)*refState.setup)+'</td><td>'+esc(e.prazo)+'</td></tr>'; }).join('')+
+    '</tbody>';
+
+  document.getElementById('refCustosTable').innerHTML =
+    '<thead><tr><th>Item de custo</th><th class="num-cell">Valor (R$)</th><th class="num-cell">% da receita</th></tr></thead><tbody>'+
+    row('Equipe (implantação)', r.custoEquipe, r.receitaGarantida)+
+    row('Impostos (Lucro Presumido, '+fmtPct(r.carga*100,2)+')', r.impostos, r.receitaGarantida)+
+    r.repassesDetalhe.map(function(rp){ return row('Repasse: '+rp.nome, rp.valor, r.receitaGarantida); }).join('')+
+    row('Overhead e administração', r.overhead, r.receitaGarantida)+
+    row('Provisão para imprevistos', r.provisao, r.receitaGarantida)+
+    '<tr class="total"><td>Total de custos</td><td class="num-cell">'+fmtBRL0(r.custoTotal)+'</td><td class="num-cell">'+fmtPct(r.receitaGarantida?r.custoTotal/r.receitaGarantida*100:0,0)+'</td></tr>'+
+    '</tbody>';
+
+  document.getElementById('refResultadoTable').innerHTML =
+    '<thead><tr><th>Linha de resultado</th><th class="num-cell">Valor (R$)</th><th class="num-cell">% da receita</th></tr></thead><tbody>'+
+    '<tr><td>Receita total garantida</td><td class="num-cell">'+fmtBRL0(r.receitaGarantida)+'</td><td class="num-cell">100%</td></tr>'+
+    '<tr><td>( - ) Total de custos</td><td class="num-cell">-'+fmtBRL0(r.custoTotal)+'</td><td class="num-cell">-'+fmtPct(r.receitaGarantida?r.custoTotal/r.receitaGarantida*100:0,0)+'</td></tr>'+
+    '<tr class="total"><td>Lucro bruto do projeto</td><td class="num-cell">'+fmtBRL0(r.lucroBruto)+'</td><td class="num-cell">'+fmtPct(r.receitaGarantida?r.lucroBruto/r.receitaGarantida*100:0,0)+'</td></tr>'+
+    '<tr><td>( - ) Comissão de parceiros ('+fmtPct(p.comissaoParceiros,0)+' do lucro bruto)</td><td class="num-cell">-'+fmtBRL0(r.comissao)+'</td><td class="num-cell">·</td></tr>'+
+    '<tr class="total"><td>Lucro líquido</td><td class="num-cell">'+fmtBRL0(r.lucroLiquido)+'</td><td class="num-cell">'+fmtPct(r.margem*100,0)+'</td></tr>'+
+    '</tbody>';
+
+  var margemLimite = STATE.premissas.margemRisco/100;
+  var saudavel = r.margem >= margemLimite;
+  document.getElementById('refIndicadores').innerHTML = [
+    stat(fmtPct(r.margem*100,0)+' <span class="pill '+(saudavel?'ok':'crit')+'" style="margin-left:8px;">'+(saudavel?'Saudável':'Risco')+'</span>', 'margem líquida do projeto', saudavel),
+    stat(fmtBRL0(r.lucroLiquido), 'lucro líquido em reais'),
+    stat(fmtPct(r.receitaGarantida?r.custoEquipe/r.receitaGarantida*100:0,0), 'custo de equipe / receita'),
+    stat(fmtPct(r.carga*100,1), 'carga tributária efetiva')
+  ].join('') + '<div class="stat"><div class="stat-num">'+(r.lucroLiquido>0?'SIM':'NÃO')+'</div><div class="stat-label">'+(r.lucroLiquido>0?'projeto dá lucro':'projeto não cobre custos')+'</div></div>';
+
+  document.getElementById('refResumoAnalitico').innerHTML =
+    '<b>Leitura do projeto.</b> A receita garantida soma '+fmtBRL0(r.receitaGarantida)+' ('+fmtBRL0(refState.setup)+' de setup + '+fmtBRL0(refState.licenca)+' de licença anualizada), contra '+fmtBRL0(r.custoTotal)+' ('+fmtPct(r.receitaGarantida?r.custoTotal/r.receitaGarantida*100:0,0)+' da receita) de custo total — equipe de implantação, impostos (Lucro Presumido), repasses a parceiros, overhead e provisão para imprevistos. '+
+    'Isso deixa um lucro bruto de '+fmtBRL0(r.lucroBruto)+'; depois da comissão de parceiros ('+fmtPct(STATE.premissas.comissaoParceiros,0)+' do lucro bruto), o lucro líquido projetado é <b>'+fmtBRL0(r.lucroLiquido)+'</b>, equivalente a uma margem líquida de <b>'+fmtPct(r.margem*100,1)+'</b>.'+
+    (refState.banco ? ' O banco de horas potencial, de '+fmtBRL0(banco)+', fica de fora dessa conta: é receita sob demanda e aprovação prévia, não garantida.' : '');
+
+  var viavel = r.margem >= margemLimite && r.lucroLiquido > 0;
+  document.getElementById('refViabilidadeBar').innerHTML =
+    '<div class="tb-label">Margem líquida projetada de '+fmtPct(r.margem*100,1)+' contra o limite mínimo de '+fmtPct(margemLimite*100,0)+' definido nas Premissas (parâmetro de risco).</div>'+
+    '<div class="tb-value">'+(viavel?'VIÁVEL':'NÃO VIÁVEL')+'</div>';
+  document.getElementById('refViabilidadeTexto').innerHTML = viavel
+    ? '<span class="pill ok">Viável</span> A margem líquida ('+fmtPct(r.margem*100,1)+') está acima do limite mínimo de '+fmtPct(margemLimite*100,0)+' e o lucro líquido projetado é positivo, de '+fmtBRL0(r.lucroLiquido)+'. Mesmo critério de saúde financeira aplicado na planilha-modelo do programa.'
+    : '<span class="pill crit">Não viável</span> A margem líquida ('+fmtPct(r.margem*100,1)+') fica abaixo do limite mínimo de '+fmtPct(margemLimite*100,0)+(r.lucroLiquido<=0?', e o projeto nem cobre os próprios custos.':'.')+' Revise o valor de setup, a licença, o custo de equipe ou os repasses antes de seguir com a proposta.';
+}
+function row(label, val, base){
+  return '<tr><td>'+esc(label)+'</td><td class="num-cell">'+fmtBRL0(val)+'</td><td class="num-cell">'+fmtPct(base?val/base*100:0,0)+'</td></tr>';
+}
+function bindReferenciaEvents(){
+  document.getElementById('refSetup').addEventListener('input', function(){ maskBRLInput(this); });
+  document.getElementById('refSetup').addEventListener('change', function(){ refState.setup = parseBRLInput(this); renderReferencia(); });
+  document.getElementById('refLicenca').addEventListener('input', function(){ maskBRLInput(this); });
+  document.getElementById('refLicenca').addEventListener('change', function(){ refState.licenca = parseBRLInput(this); renderReferencia(); });
+  document.getElementById('refBanco').addEventListener('change', function(){ refState.banco = this.value==='1'; renderReferencia(); });
+  document.getElementById('btnRefReset').addEventListener('click', function(){ refState = refDefaults(refState.propostaId); renderReferencia(); });
+}
+
+/* ---------- render: simulador ---------- */
+var simN = 1;
+var simNAuto = true;
+var CENARIOS = [1,6,10,15,20];
+var growState = {inicial:1, novos:3, anos:5, inicialAuto:true};
+
+function conselhosAtivosReais(){
+  return STATE.projetos.filter(function(x){ return x.status==="contrato"||x.status==="implantacao"||x.status==="ativo"; }).length;
+}
+function conselhosPipelineReais(){
+  return STATE.projetos.filter(function(x){ return x.status==="prospeccao"||x.status==="proposta"; }).length;
+}
+
+function renderSimulador(){
+  var p = STATE.premissas;
+  var reaisAtivos = conselhosAtivosReais();
+  if(simNAuto) simN = clamp(reaisAtivos || 1, 1, 40);
+  if(growState.inicialAuto) growState.inicial = reaisAtivos;
+
+  var ativosObjs = STATE.projetos.filter(function(x){ return x.status==="contrato"||x.status==="implantacao"||x.status==="ativo"; });
+  var lucroRealizado = ativosObjs.reduce(function(s,x){ return s + calcularProjeto(x.valorSetup,x.valorLicenca,p).lucroLiquido; }, 0);
+  document.getElementById('simuladorRealStats').innerHTML = [
+    stat(fmtNum(reaisAtivos), 'conselhos ativos hoje, no portfólio'),
+    stat(fmtNum(conselhosPipelineReais()), 'em prospecção ou proposta enviada'),
+    stat(fmtBRL0(lucroRealizado), 'lucro líquido já realizado, portfólio atual', true)
+  ].join('');
+
+  document.getElementById('cenarioSlider').value = simN;
+  document.getElementById('cenarioNLabel').textContent = simN + (simN===1?' conselho':' conselhos');
+  document.getElementById('cenarioChips').innerHTML = CENARIOS.map(function(c){
+    return '<button type="button" class="chip'+(simN===c?' active':'')+'" data-cenario="'+c+'">'+c+' conselho'+(c===1?'':'s')+'</button>';
+  }).join('') + '<button type="button" class="chip'+(CENARIOS.indexOf(simN)===-1?' active':'')+'" data-cenario="custom">personalizado</button>';
+
+  var r1 = calcularProjeto(p.setup, licencaAnualTotal(p), p);
+  var rN = calcularProjeto(p.setup*simN, licencaAnualTotal(p)*simN, p);
+  var banco = bancoHorasTotal(p)*simN;
+
+  document.getElementById('cenarioStats').innerHTML = [
+    stat(fmtBRL0(p.setup*simN), 'receita de setup total'),
+    stat(fmtBRL0(licencaAnualTotal(p)*simN), 'licença anual total'),
+    stat(fmtBRL0(rN.receitaGarantida), 'receita total garantida'),
+    stat(fmtBRL0(rN.lucroLiquido), 'lucro líquido Traevo', true),
+    stat(fmtPct(rN.margem*100,0), 'margem líquida'),
+    stat(fmtBRL0(rN.repasses), 'repasses a parceiros (custo)')
+  ].join('');
+
+  var maxLucro = Math.max.apply(null, CENARIOS.map(function(c){ return calcularProjeto(p.setup*c, licencaAnualTotal(p)*c, p).lucroLiquido; }).concat([rN.lucroLiquido]));
+  document.getElementById('cenarioChart').innerHTML = CENARIOS.map(function(c){
+    var rc = calcularProjeto(p.setup*c, licencaAnualTotal(p)*c, p);
+    var w = maxLucro? clamp(rc.lucroLiquido/maxLucro*100,2,100) : 2;
+    return '<div class="bar-row"><div class="bar-lab">'+c+' conselho'+(c===1?'':'s')+(c===simN?' · atual':'')+'</div><div class="bar-track"><div class="bar-fill'+(c===simN?' focus':'')+'" style="width:'+w+'%"></div></div><div class="bar-val">'+fmtBRL0(rc.lucroLiquido)+'</div></div>';
+  }).join('');
+
+  setVal('growInicial', growState.inicial);
+  setVal('growNovos', growState.novos);
+  setVal('growAnos', growState.anos);
+  renderGrowTable();
+}
+function renderGrowTable(){
+  var p = STATE.premissas;
+  var ativos = growState.inicial;
+  var rows = [], acumLucro = 0, acumRecorrente = 0;
+  for(var ano=1; ano<=growState.anos; ano++){
+    var novos = growState.novos;
+    ativos += novos;
+    var rNovos = calcularProjeto(p.setup*novos, 0, p);
+    var lucroAnoSetup = rNovos.lucroLiquido;
+    var recorrenteAno = ativos * licencaAnualTotal(p);
+    acumLucro += lucroAnoSetup;
+    acumRecorrente += recorrenteAno;
+    rows.push('<tr><td><b>Ano '+ano+'</b></td><td class="num-cell">'+fmtNum(novos)+'</td><td class="num-cell">'+fmtNum(ativos)+'</td>'+
+      '<td class="num-cell">'+fmtBRL0(lucroAnoSetup)+'</td><td class="num-cell">'+fmtBRL0(recorrenteAno)+'</td>'+
+      '<td class="num-cell">'+fmtBRL0(acumLucro)+'</td></tr>');
+  }
+  document.getElementById('growTable').innerHTML =
+    '<thead><tr><th>Período</th><th class="num-cell">Novos conselhos</th><th class="num-cell">Ativos (fim do ano)</th><th class="num-cell">Lucro líq. do setup</th><th class="num-cell">Receita recorrente do ano</th><th class="num-cell">Lucro líq. acumulado</th></tr></thead><tbody>'+
+    rows.join('')+'</tbody>';
+  document.getElementById('growTotalbar').innerHTML =
+    '<div class="tb-label">Ao final de '+growState.anos+' ano'+(growState.anos===1?'':'s')+', com '+fmtNum(ativos)+' conselhos ativos: lucro líquido acumulado do setup + receita recorrente do último ano.</div>'+
+    '<div class="tb-value">'+fmtBRL0(acumLucro + (rows.length? (ativos*licencaAnualTotal(p)) : 0))+'</div>';
+}
+function bindSimuladorEvents(){
+  document.getElementById('cenarioSlider').addEventListener('input', function(){ simN = clamp(parseInt(this.value)||1,1,40); simNAuto = false; renderSimulador(); });
+  document.getElementById('cenarioChips').addEventListener('click', function(e){
+    var v = e.target.getAttribute && e.target.getAttribute('data-cenario');
+    if(!v) return;
+    if(v!=='custom'){ simN = parseInt(v); simNAuto = false; renderSimulador(); }
+  });
+  ['growInicial','growNovos','growAnos'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', function(){
+      var map={growInicial:'inicial',growNovos:'novos',growAnos:'anos'};
+      var v = parseInt(this.value)||0;
+      if(map[id]==='anos') v = clamp(v,1,10);
+      growState[map[id]] = v;
+      if(id==='growInicial') growState.inicialAuto = false;
+      renderGrowTable();
+    });
+  });
+}
+
+/* ---------- render: recorrência ---------- */
+var recAtivos = 6, recAnos = 3, recAtivosAuto = true;
+function renderRecorrencia(){
+  var p = STATE.premissas;
+  if(recAtivosAuto) recAtivos = clamp(conselhosAtivosReais() || 1, 1, 40);
+  document.getElementById('recAtivosSlider').value = recAtivos;
+  document.getElementById('recAtivosLabel').textContent = recAtivos + (recAtivos===1?' conselho':' conselhos');
+  document.getElementById('recAnosSlider').value = recAnos;
+  document.getElementById('recAnosLabel').textContent = recAnos + (recAnos===1?' ano':' anos');
+
+  var total = licencaAnualTotal(p);
+  document.getElementById('recLicencasTable').innerHTML =
+    '<thead><tr><th>Item de licença</th><th class="num-cell">Valor anual (R$)</th><th class="num-cell">Valor mensal (R$)</th><th>Periodicidade</th></tr></thead><tbody>'+
+    p.licencas.map(function(l){ return '<tr><td>'+esc(l.item)+'</td><td class="num-cell">'+fmtBRL0(l.anual)+'</td><td class="num-cell">'+fmtBRL0(l.anual/12)+'</td><td>'+esc(l.periodicidade)+'</td></tr>'; }).join('')+
+    '<tr class="total"><td>Total por conselho ativo</td><td class="num-cell">'+fmtBRL0(total)+'</td><td class="num-cell">'+fmtBRL0(total/12)+'</td><td></td></tr>'+
+    '</tbody>';
+
+  var mensal = recAtivos * total/12;
+  var anual = recAtivos * total;
+  document.getElementById('recStats').innerHTML = [
+    stat(fmtBRL0(mensal), 'receita mensal recorrente (MRR)'),
+    stat(fmtBRL0(anual), 'receita anual recorrente', true),
+    stat(fmtBRL0(anual*recAnos), 'acumulado em '+recAnos+' ano'+(recAnos===1?'':'s'), true),
+    stat('100%', 'da Traevo, sem repasses nem comissão')
+  ].join('');
+
+  document.getElementById('recChartSub').textContent = recAtivos + ' conselho'+(recAtivos===1?'':'s')+' ativo'+(recAtivos===1?'':'s')+' · '+fmtBRL0(anual)+'/ano cada um';
+  var chartRows = [];
+  var acc = 0;
+  var maxAcc = anual*recAnos || 1;
+  for(var a=1;a<=recAnos;a++){
+    acc += anual;
+    var w = clamp(acc/maxAcc*100,2,100);
+    chartRows.push('<div class="bar-row"><div class="bar-lab">Ano '+a+'</div><div class="bar-track"><div class="bar-fill'+(a===recAnos?' focus':'')+'" style="width:'+w+'%"></div></div><div class="bar-val">'+fmtBRL0(acc)+'</div></div>');
+  }
+  document.getElementById('recChart').innerHTML = chartRows.join('');
+
+  document.getElementById('recCallout').innerHTML = '<b>Resumo.</b> Cada conselho ativo vira uma anuidade de '+fmtBRL0(total)+', sem novo custo de equipe. Com '+recAtivos+' conselho'+(recAtivos===1?'':'s')+' ativo'+(recAtivos===1?'':'s')+', a recorrência soma '+fmtBRL0(anual)+' por ano, empilhada sobre o lucro do setup de cada implantação.';
+}
+function bindRecorrenciaEvents(){
+  document.getElementById('recAtivosSlider').addEventListener('input', function(){ recAtivos = clamp(parseInt(this.value)||1,1,40); recAtivosAuto = false; renderRecorrencia(); });
+  document.getElementById('recAnosSlider').addEventListener('input', function(){ recAnos = clamp(parseInt(this.value)||1,1,10); renderRecorrencia(); });
+}
+
+/* ---------- render: portfolio ---------- */
+function renderPortfolio(){
+  var p = STATE.premissas;
+  var list = STATE.projetos;
+  document.getElementById('portfolioEmpty').style.display = list.length? 'none':'block';
+
+  var contratados = list.filter(function(x){ return x.status==="contrato"||x.status==="implantacao"||x.status==="ativo"; });
+  var receitaTotal = contratados.reduce(function(s,x){ return s+(Number(x.valorSetup)||0)+(Number(x.valorLicenca)||0); },0);
+  var lucroTotal = contratados.reduce(function(s,x){ return s+calcularProjeto(x.valorSetup,x.valorLicenca,p).lucroLiquido; },0);
+  document.getElementById('portfolioTotalbar').innerHTML =
+    '<div class="tb-label">'+contratados.length+' projeto'+(contratados.length===1?'':'s')+' contratado'+(contratados.length===1?'':'s')+' ou em implantação · receita '+fmtBRL0(receitaTotal)+'</div>'+
+    '<div class="tb-value">'+fmtBRL0(lucroTotal)+' lucro líquido projetado</div>';
+
+  var statusOptions = STATUS_ORDER.map(function(s){ return '<option value="'+s+'">'+esc(STATUS_META[s].label)+'</option>'; }).join('');
+
+  document.getElementById('portfolioTable').innerHTML =
+    '<thead><tr><th style="min-width:190px">Conselho / cliente</th><th style="min-width:160px">Status</th><th class="num-cell" style="width:130px">Setup (R$)</th><th class="num-cell" style="width:130px">Licença anual (R$)</th><th style="width:120px">Assinatura</th><th class="num-cell" style="width:130px">Lucro líq. projetado</th><th style="min-width:170px">Observações</th><th style="width:36px"></th></tr></thead><tbody>'+
+    list.map(function(x){
+      var r = calcularProjeto(x.valorSetup,x.valorLicenca,p);
+      var saudavelPf = r.margem >= (STATE.premissas.margemRisco/100);
+      return '<tr>'+
+        '<td><input data-pf-field="nome" data-id="'+x.id+'" type="text" value="'+esc(x.nome)+'"></td>'+
+        '<td><select data-pf-field="status" data-id="'+x.id+'">'+ statusOptions.replace('value="'+x.status+'"','value="'+x.status+'" selected') +'</select></td>'+
+        '<td class="num-cell"><input data-pf-field="valorSetup" data-id="'+x.id+'" type="number" step="0.01" min="0" value="'+x.valorSetup+'" style="text-align:right"></td>'+
+        '<td class="num-cell"><input data-pf-field="valorLicenca" data-id="'+x.id+'" type="number" step="0.01" min="0" value="'+x.valorLicenca+'" style="text-align:right"></td>'+
+        '<td><input data-pf-field="dataAssinatura" data-id="'+x.id+'" type="date" value="'+esc(x.dataAssinatura||'')+'"></td>'+
+        '<td class="num-cell">'+fmtBRL0(r.lucroLiquido)+' <span class="pill '+(saudavelPf?'ok':'crit')+'">'+(saudavelPf?'Saudável':'Risco')+'</span></td>'+
+        '<td><input data-pf-field="observacoes" data-id="'+x.id+'" type="text" value="'+esc(x.observacoes||'')+'"></td>'+
+        '<td><span class="row-del" data-pf-del="'+x.id+'" title="Remover">&times;</span></td>'+
+        '</tr>';
+    }).join('')+'</tbody>';
+}
+function bindPortfolioEvents(){
+  document.getElementById('portfolioTable').addEventListener('change', function(e){
+    var t=e.target, id=t.getAttribute('data-pf-field')?t.getAttribute('data-id'):null, f=t.getAttribute('data-pf-field');
+    if(!id||!f) return;
+    var patch = {};
+    patch[f] = (f==='valorSetup'||f==='valorLicenca') ? (parseFloat(t.value)||0) : t.value;
+    updateProjeto(id, patch);
+  });
+  document.getElementById('portfolioTable').addEventListener('click', function(e){
+    var id = e.target.getAttribute && e.target.getAttribute('data-pf-del');
+    if(!id) return;
+    deleteProjeto(id);
+  });
+  document.getElementById('btnAddProjeto').addEventListener('click', function(){
+    addProjeto({nome:"Novo projeto", status:"prospeccao", valorSetup:STATE.premissas.setup, valorLicenca:licencaAnualTotal(STATE.premissas), dataAssinatura:"", observacoes:""});
+  });
+}
+
+function updateProjeto(id, patch){
+  var idx = STATE.projetos.findIndex(function(x){ return x.id===id; });
+  if(idx>-1){ STATE.projetos[idx] = Object.assign({}, STATE.projetos[idx], patch); }
+  renderAll();
+  if(db && projetosCol && STATE.canWrite){ projetosCol.doc(id).update(patch).catch(function(){}); }
+}
+function deleteProjeto(id){
+  STATE.projetos = STATE.projetos.filter(function(x){ return x.id!==id; });
+  renderAll();
+  if(db && projetosCol && STATE.canWrite){ projetosCol.doc(id).delete().catch(function(){}); }
+}
+function addProjeto(data){
+  var localId = 'local-'+Date.now()+'-'+Math.floor(Math.random()*1000);
+  var withOrder = Object.assign({}, data, {_order: Date.now()});
+  STATE.projetos.push(Object.assign({id:localId}, withOrder));
+  renderAll();
+  if(db && projetosCol && STATE.canWrite){
+    projetosCol.add(withOrder).then(function(ref){
+      var idx = STATE.projetos.findIndex(function(x){ return x.id===localId; });
+      if(idx>-1) STATE.projetos[idx].id = ref.id;
+    }).catch(function(){});
+  }
+}
+
+function addProposta(data){
+  var localId = 'local-'+Date.now()+'-'+Math.floor(Math.random()*1000);
+  var withOrder = Object.assign({}, data, {_order: Date.now()});
+  STATE.propostas.push(Object.assign({id:localId}, withOrder));
+  if(db && propostasCol && STATE.canWrite){
+    propostasCol.add(withOrder).then(function(ref){
+      var idx = STATE.propostas.findIndex(function(x){ return x.id===localId; });
+      if(idx>-1) STATE.propostas[idx].id = ref.id;
+    }).catch(function(){});
+  }
+  return localId;
+}
+
+/* ---------- assistente de proposta (wizard) ---------- */
+function wizardDataDefaults(){
+  var consultoria = (STATE.premissas.equipe||[]).map(function(e){ return {nome:e.cargo, valor:0}; });
+  var equipe = (STATE.premissas.equipe||[]).map(function(e){ return {nome:'', papel:e.cargo}; });
+  return {segmento:'', bitrix24PlanoId:null, whatsapp:0, ia:0, telefonia:0, suporte:0, bancoDados:0, consultoria:consultoria, equipe:equipe, extras:[]};
+}
+var wizardState = {open:false, blockIndex:0, fillAll:false, data:wizardDataDefaults()};
+var propostaSelecionadaId = null;
+
+function calcPropostaTotais(d){
+  var plano = BITRIX24_PLANOS.filter(function(x){ return x.id===d.bitrix24PlanoId; })[0] || null;
+  var licItens = [];
+  if(plano) licItens.push({nome:'Bitrix24: '+plano.label.split(' (')[0], mensal:plano.mensal});
+  licItens.push({nome:'WhatsApp', mensal:Number(d.whatsapp)||0});
+  licItens.push({nome:'IA para conversação', mensal:Number(d.ia)||0});
+  licItens.push({nome:'Telefonia', mensal:Number(d.telefonia)||0});
+  licItens.push({nome:'Suporte', mensal:Number(d.suporte)||0});
+  licItens.push({nome:'Banco de dados para a IA', mensal:Number(d.bancoDados)||0});
+  var licMensal = licItens.reduce(function(s,x){ return s+x.mensal; },0);
+  var consultoriaTotal = (d.consultoria||[]).reduce(function(s,x){ return s+(Number(x.valor)||0); },0);
+  var extrasMensal = (d.extras||[]).filter(function(x){ return x.tipo==='mensal'; }).reduce(function(s,x){ return s+(Number(x.valor)||0); },0);
+  var extrasUnica = (d.extras||[]).filter(function(x){ return x.tipo!=='mensal'; }).reduce(function(s,x){ return s+(Number(x.valor)||0); },0);
+  var mensalTotal = licMensal + extrasMensal;
+  var unicaTotal = consultoriaTotal + extrasUnica;
+  var anualTotal = mensalTotal*12 + unicaTotal;
+  return {plano:plano, licItens:licItens, licMensal:licMensal, consultoriaTotal:consultoriaTotal, extrasMensal:extrasMensal, extrasUnica:extrasUnica, mensalTotal:mensalTotal, unicaTotal:unicaTotal, anualTotal:anualTotal};
+}
+
+function wizardAnsweredCount(){
+  var d = wizardState.data, n=0;
+  if(d.segmento) n++;
+  if(d.bitrix24PlanoId) n++;
+  ['whatsapp','ia','telefonia','suporte','bancoDados'].forEach(function(k){ if(Number(d[k])>0) n++; });
+  n += (d.consultoria||[]).length;
+  n += (d.equipe||[]).length;
+  n += (d.extras||[]).length;
+  return n;
+}
+
+function wizardFieldsSegmento(){
+  var d = wizardState.data;
+  return ''
+    +'<div class="field"><label for="wzSegmento">Segmento do cliente</label>'
+    +'<input id="wzSegmento" list="wzSegmentoOpts" type="text" placeholder="Ex.: Conselho, Prefeitura" value="'+esc(d.segmento||'')+'">'
+    +'<datalist id="wzSegmentoOpts"><option value="Conselho"><option value="Prefeitura"></datalist></div>'
+    +'<div class="field-hint">Classifica o tipo de cliente. Prefeituras, por exemplo, costumam contratar só comunicação e automação de processos, sem o pacote completo de módulos dos conselhos.</div>'
+    +'<div class="wizard-shortcut-hint">⌘/Ctrl + Enter para avançar</div>';
+}
+function wizardFieldsLicenciamento(){
+  var d = wizardState.data;
+  var planoOptions = BITRIX24_PLANOS.map(function(pl){
+    return '<option value="'+pl.id+'"'+(d.bitrix24PlanoId===pl.id?' selected':'')+'>'+esc(pl.label)+'</option>';
+  }).join('');
+  var plano = BITRIX24_PLANOS.filter(function(x){ return x.id===d.bitrix24PlanoId; })[0];
+  var resumoPlano = plano
+    ? ('Mensal: <b>'+fmtBRL(plano.mensal)+'</b> &middot; Anual (mensal&times;12): <b>'+fmtBRL(plano.mensal*12)+'</b>'+(plano.anualMensal!==plano.mensal?' &middot; equivalente no plano anual: '+fmtBRL(plano.anualMensal)+'/mês':''))
+    : 'Selecione um plano para ver os valores.';
+  var t = calcPropostaTotais(d);
+  return ''
+    +'<div class="field"><label for="wzBitrix24Plano">Licença Bitrix24</label>'
+    +'<select id="wzBitrix24Plano"><option value="">Selecione…</option>'+planoOptions+'</select></div>'
+    +'<div class="field-hint">'+resumoPlano+'</div>'
+    +'<div class="field"><label for="wzWhatsapp">WhatsApp: valor mensal (R$)</label><input id="wzWhatsapp" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(d.whatsapp)+'></div>'
+    +'<div class="field"><label for="wzIa">IA para conversação: valor mensal (R$)</label><input id="wzIa" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(d.ia)+'></div>'
+    +'<div class="field"><label for="wzTelefonia">Telefonia: valor mensal (R$)</label><input id="wzTelefonia" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(d.telefonia)+'></div>'
+    +'<div class="field"><label for="wzSuporte">Suporte: valor mensal (R$)</label><input id="wzSuporte" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(d.suporte)+'></div>'
+    +'<div class="field"><label for="wzBancoDados">Banco de dados para a IA: valor mensal (R$)</label><input id="wzBancoDados" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(d.bancoDados)+'></div>'
+    +'<div class="wizard-shortcut-hint">⌘/Ctrl + Enter para avançar</div>'
+    +'<div class="wizard-partial-total"><span>Total até aqui</span><span><b>'+fmtBRL0(t.mensalTotal)+'</b>/mês &middot; <b>'+fmtBRL0(t.anualTotal)+'</b>/ano</span></div>';
+}
+function wizardFieldsConsultoria(){
+  var d = wizardState.data;
+  var rows = (d.consultoria||[]).map(function(item,i){
+    return '<div class="wizard-list-item">'
+      +'<input data-wz-cons-field="nome" data-i="'+i+'" type="text" placeholder="Item de consultoria" value="'+esc(item.nome)+'" style="flex:1;min-width:260px;">'
+      +'<input data-wz-cons-field="valor" data-i="'+i+'" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(item.valor)+' style="width:150px;">'
+      +'<span class="row-del" data-wz-cons-del="'+i+'" title="Remover">&times;</span>'
+      +'</div>';
+  }).join('');
+  return (rows || '<div class="field-hint">Nenhum item de consultoria adicionado ainda.</div>')
+    +'<div class="btn-row">'
+    +'<button class="btn ghost" type="button" id="wzAddConsultoria">+ Adicionar item de consultoria</button>'
+    +'<button class="btn ghost" type="button" id="wzImportPlanilha" disabled title="Em breve">Importar da planilha</button>'
+    +'</div><div class="field-hint">Em breve. Importação ainda não integrada tecnicamente.</div>'
+    +'<div class="wizard-shortcut-hint">⌘/Ctrl + Enter para avançar</div>';
+}
+function wizardFieldsEquipe(){
+  var d = wizardState.data;
+  var rows = (d.equipe||[]).map(function(item,i){
+    return '<div class="wizard-list-item">'
+      +'<input data-wz-eq-field="nome" data-i="'+i+'" type="text" placeholder="Nome" value="'+esc(item.nome)+'" style="flex:1;min-width:260px;">'
+      +'<input data-wz-eq-field="papel" data-i="'+i+'" type="text" placeholder="Papel / função no projeto" value="'+esc(item.papel)+'" style="flex:1;min-width:140px;">'
+      +'<span class="row-del" data-wz-eq-del="'+i+'" title="Remover">&times;</span>'
+      +'</div>';
+  }).join('');
+  return (rows || '<div class="field-hint">Nenhuma pessoa adicionada ainda.</div>')
+    +'<div class="btn-row"><button class="btn ghost" type="button" id="wzAddEquipe">+ Adicionar pessoa da equipe</button></div>'
+    +'<div class="wizard-shortcut-hint">⌘/Ctrl + Enter para avançar</div>';
+}
+function wizardFieldsExtras(){
+  var d = wizardState.data;
+  var rows = (d.extras||[]).map(function(item,i){
+    return '<div class="wizard-list-item">'
+      +'<input data-wz-ex-field="nome" data-i="'+i+'" type="text" placeholder="Item extra" value="'+esc(item.nome)+'" style="flex:1;min-width:260px;">'
+      +'<input data-wz-ex-field="valor" data-i="'+i+'" type="text" inputmode="decimal" placeholder="R$ 0,00"'+brlValAttr(item.valor)+' style="width:130px;">'
+      +'<select data-wz-ex-field="tipo" data-i="'+i+'"><option value="mensal"'+(item.tipo==='mensal'?' selected':'')+'>Mensal</option><option value="unica"'+(item.tipo==='unica'?' selected':'')+'>Única</option></select>'
+      +'<span class="row-del" data-wz-ex-del="'+i+'" title="Remover">&times;</span>'
+      +'</div>';
+  }).join('');
+  return (rows || '<div class="field-hint">Nenhum item extra adicionado ainda.</div>')
+    +'<div class="btn-row"><button class="btn ghost" type="button" id="wzAddExtra">+ Adicionar item extra</button></div>'
+    +'<div class="wizard-shortcut-hint">⌘/Ctrl + Enter para avançar</div>';
+}
+function wizardFieldsResumo(){
+  var d = wizardState.data;
+  var t = calcPropostaTotais(d);
+  var licRows = t.licItens.filter(function(x){ return x.mensal>0; }).map(function(x){
+    return '<div class="kv-mini"><span>'+esc(x.nome)+'</span><span>'+fmtBRL0(x.mensal)+'/mês</span></div>';
+  }).join('') || '<div class="field-hint">Nenhum item de licenciamento preenchido.</div>';
+  var consRows = (d.consultoria||[]).map(function(x){
+    return '<div class="kv-mini"><span>'+esc(x.nome||'Item')+'</span><span>'+fmtBRL0(Number(x.valor)||0)+'</span></div>';
+  }).join('') || '<div class="field-hint">Nenhum item de consultoria.</div>';
+  var eqRows = (d.equipe||[]).map(function(x){
+    return '<div class="kv-mini"><span>'+esc(x.nome||'Pessoa')+'</span><span>'+esc(x.papel||'')+'</span></div>';
+  }).join('') || '<div class="field-hint">Nenhuma pessoa alocada.</div>';
+  var exRows = (d.extras||[]).map(function(x){
+    return '<div class="kv-mini"><span>'+esc(x.nome||'Item')+' ('+(x.tipo==='mensal'?'mensal':'única')+')</span><span>'+fmtBRL0(Number(x.valor)||0)+'</span></div>';
+  }).join('') || '<div class="field-hint">Nenhum item extra.</div>';
+  return ''
+    +'<h3 class="sub">Segmento</h3><div class="kv-mini"><span>Cliente</span><span>'+esc(d.segmento||'Não definido')+'</span></div>'
+    +'<h3 class="sub">Licenciamento</h3>'+licRows
+    +'<h3 class="sub">Consultoria</h3>'+consRows
+    +'<h3 class="sub">Equipe</h3>'+eqRows
+    +'<h3 class="sub">Itens extras</h3>'+exRows
+    +'<div class="totalbar"><div class="tb-label">Valor mensal total</div><div class="tb-value">'+fmtBRL0(t.mensalTotal)+'</div></div>'
+    +'<div class="totalbar"><div class="tb-label">Valor anual total (mensal &times; 12 + itens de cobrança única)</div><div class="tb-value">'+fmtBRL0(t.anualTotal)+'</div></div>'
+    +'<div class="btn-row"><button class="btn" type="button" id="wzConfirmar">Confirmar proposta</button></div>';
+}
+
+var WIZARD_BLOCKS = [
+  {title:'Segmento do cliente', support:'Antes de tudo: para qual tipo de cliente é esta proposta?', fields:wizardFieldsSegmento},
+  {title:'Licenciamento dos sistemas', support:'Defina o plano Bitrix24 e os demais custos mensais de licenciamento previstos nesta proposta.', fields:wizardFieldsLicenciamento},
+  {title:'Consultoria', support:'Liste os itens de consultoria previstos para este projeto, com nome e valor.', fields:wizardFieldsConsultoria, full:true},
+  {title:'Equipe', support:'Quem faz parte da equipe alocada a este projeto, e em que função.', fields:wizardFieldsEquipe, full:true},
+  {title:'Itens extras', support:'Qualquer coisa fora do padrão (cobrança mensal ou única) entra aqui.', fields:wizardFieldsExtras, full:true},
+  {title:'Resumo final', support:'Confira tudo antes de confirmar. Esta tela é somente leitura.', fields:wizardFieldsResumo, full:true}
+];
+
+function renderWizard(){
+  var overlay = document.getElementById('wizardOverlay');
+  overlay.classList.toggle('active', wizardState.open);
+  if(!wizardState.open) return;
+  var n = WIZARD_BLOCKS.length;
+  var last = wizardState.blockIndex === n-1;
+  document.getElementById('wizardBlockLabel').textContent = 'BLOCO '+(wizardState.blockIndex+1)+' DE '+n;
+  document.getElementById('wizardAnsweredLabel').textContent = wizardAnsweredCount()+' respondidas';
+  document.getElementById('wizardProgressFill').style.width = ((wizardState.blockIndex+1)/n*100)+'%';
+  document.getElementById('wizardBack').disabled = wizardState.blockIndex===0;
+  document.getElementById('wizardSkip').style.display = last ? 'none' : '';
+  document.getElementById('wizardFoot').style.display = wizardState.fillAll ? 'none' : 'flex';
+  document.getElementById('wizardFillAll').textContent = wizardState.fillAll ? '☰ Preencher passo a passo' : '☰ Preencher tudo de uma vez';
+
+  var body = document.getElementById('wizardBody');
+  if(wizardState.fillAll){
+    body.className = 'wizard-body full';
+    body.innerHTML = WIZARD_BLOCKS.map(function(b,i){
+      return '<div class="wizard-fillall-block"><h2 class="sec" style="margin-top:0;">'+(i+1)+'. '+esc(b.title)+'</h2>'
+        +'<p style="color:var(--ink-3);margin-top:-6px;">'+esc(b.support)+'</p>'+b.fields()+'</div>';
+    }).join('');
+  } else {
+    var blk = WIZARD_BLOCKS[wizardState.blockIndex];
+    var full = last || !!blk.full;
+    if(full){
+      body.className = 'wizard-body full';
+      body.innerHTML = '<div><div class="wizard-q-title">'+esc(blk.title)+'</div><div class="wizard-q-support">'+esc(blk.support)+'</div>'
+        +'<div style="margin-top:20px;">'+blk.fields()+'</div></div>';
+    } else {
+      body.className = 'wizard-body';
+      body.innerHTML = '<div><div class="wizard-q-title">'+esc(blk.title)+'</div><div class="wizard-q-support">'+esc(blk.support)+'</div></div>'
+        +'<div class="wizard-answer">'+blk.fields()+'</div>';
+    }
+  }
+}
+function openWizard(){
+  wizardState.open = true;
+  renderWizard();
+}
+function closeWizard(){
+  wizardState.open = false;
+  document.getElementById('wizardOverlay').classList.remove('active');
+}
+function confirmProposta(){
+  var d = wizardState.data;
+  var t = calcPropostaTotais(d);
+  var registro = {
+    nome: 'Proposta '+new Date().toLocaleDateString('pt-BR'),
+    criadoEm: new Date().toISOString(),
+    segmento: d.segmento || '',
+    bitrix24PlanoId: d.bitrix24PlanoId,
+    whatsapp: Number(d.whatsapp)||0,
+    ia: Number(d.ia)||0,
+    telefonia: Number(d.telefonia)||0,
+    suporte: Number(d.suporte)||0,
+    bancoDados: Number(d.bancoDados)||0,
+    consultoria: (d.consultoria||[]).slice(),
+    equipe: (d.equipe||[]).slice(),
+    extras: (d.extras||[]).slice(),
+    valorMensalTotal: t.mensalTotal,
+    valorAnualTotal: t.anualTotal
+  };
+  var novoId = addProposta(registro);
+  propostaSelecionadaId = novoId;
+  wizardState.open = false;
+  wizardState.blockIndex = 0;
+  wizardState.fillAll = false;
+  wizardState.data = wizardDataDefaults();
+  document.getElementById('wizardOverlay').classList.remove('active');
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+  var target = document.getElementById('proposta-pronta');
+  if(target) target.classList.add('active');
+  var navPropostas = document.querySelector('.nav-item[data-view="proposta-pronta"]');
+  if(navPropostas) navPropostas.classList.add('active');
+  renderAll();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function bindWizardEvents(){
+  document.getElementById('btnAbrirWizard').addEventListener('click', function(){ openWizard(); });
+  document.getElementById('wizardClose').addEventListener('click', function(){ closeWizard(); });
+  document.getElementById('wizardBack').addEventListener('click', function(){
+    if(wizardState.blockIndex>0){ wizardState.blockIndex--; renderWizard(); }
+  });
+  document.getElementById('wizardSkip').addEventListener('click', function(){
+    if(wizardState.blockIndex < WIZARD_BLOCKS.length-1){ wizardState.blockIndex++; renderWizard(); }
+  });
+  document.getElementById('wizardFillAll').addEventListener('click', function(){
+    wizardState.fillAll = !wizardState.fillAll;
+    renderWizard();
+  });
+
+  var body = document.getElementById('wizardBody');
+  body.addEventListener('input', function(e){
+    var t = e.target;
+    var maskIds = {wzWhatsapp:1, wzIa:1, wzTelefonia:1, wzSuporte:1, wzBancoDados:1};
+    if(maskIds[t.id]){ maskBRLInput(t); return; }
+    if(t.getAttribute('data-wz-cons-field')==='valor'){ maskBRLInput(t); return; }
+    if(t.getAttribute('data-wz-ex-field')==='valor'){ maskBRLInput(t); return; }
+  });
+  body.addEventListener('change', function(e){
+    var t = e.target;
+    var simpleMap = {wzWhatsapp:'whatsapp', wzIa:'ia', wzTelefonia:'telefonia', wzSuporte:'suporte', wzBancoDados:'bancoDados'};
+    if(t.id==='wzSegmento'){ wizardState.data.segmento = t.value; renderWizard(); return; }
+    if(t.id==='wzBitrix24Plano'){ wizardState.data.bitrix24PlanoId = t.value || null; renderWizard(); return; }
+    if(simpleMap[t.id]){ wizardState.data[simpleMap[t.id]] = parseBRLInput(t); renderWizard(); return; }
+
+    var i, f;
+    f = t.getAttribute('data-wz-cons-field'); i = t.getAttribute('data-i');
+    if(f && i!=null){
+      var cons = wizardState.data.consultoria.slice();
+      cons[i] = Object.assign({}, cons[i]); cons[i][f] = f==='valor' ? parseBRLInput(t) : t.value;
+      wizardState.data.consultoria = cons; renderWizard(); return;
+    }
+    f = t.getAttribute('data-wz-eq-field'); i = t.getAttribute('data-i');
+    if(f && i!=null){
+      var eq = wizardState.data.equipe.slice();
+      eq[i] = Object.assign({}, eq[i]); eq[i][f] = t.value;
+      wizardState.data.equipe = eq; renderWizard(); return;
+    }
+    f = t.getAttribute('data-wz-ex-field'); i = t.getAttribute('data-i');
+    if(f && i!=null){
+      var ex = wizardState.data.extras.slice();
+      ex[i] = Object.assign({}, ex[i]); ex[i][f] = f==='valor' ? parseBRLInput(t) : t.value;
+      wizardState.data.extras = ex; renderWizard(); return;
+    }
+  });
+  body.addEventListener('click', function(e){
+    var t = e.target;
+    if(t.id==='wzAddConsultoria'){ wizardState.data.consultoria = wizardState.data.consultoria.concat([{nome:'Novo item', valor:0}]); renderWizard(); return; }
+    if(t.id==='wzAddEquipe'){ wizardState.data.equipe = wizardState.data.equipe.concat([{nome:'', papel:''}]); renderWizard(); return; }
+    if(t.id==='wzAddExtra'){ wizardState.data.extras = wizardState.data.extras.concat([{nome:'Novo item', valor:0, tipo:'mensal'}]); renderWizard(); return; }
+    if(t.id==='wzConfirmar'){ confirmProposta(); return; }
+    var i = t.getAttribute && t.getAttribute('data-wz-cons-del');
+    if(i!=null){ var cons=wizardState.data.consultoria.slice(); cons.splice(i,1); wizardState.data.consultoria=cons; renderWizard(); return; }
+    i = t.getAttribute && t.getAttribute('data-wz-eq-del');
+    if(i!=null){ var eq=wizardState.data.equipe.slice(); eq.splice(i,1); wizardState.data.equipe=eq; renderWizard(); return; }
+    i = t.getAttribute && t.getAttribute('data-wz-ex-del');
+    if(i!=null){ var ex=wizardState.data.extras.slice(); ex.splice(i,1); wizardState.data.extras=ex; renderWizard(); return; }
+  });
+  body.addEventListener('keydown', function(e){
+    if((e.metaKey||e.ctrlKey) && e.key==='Enter'){
+      e.preventDefault();
+      if(wizardState.blockIndex < WIZARD_BLOCKS.length-1){ wizardState.blockIndex++; renderWizard(); }
+    }
+  });
+}
+
+/* ---------- render: proposta pronta ---------- */
+function fmtDataHoraBR(iso){
+  var dt = new Date(iso);
+  if(isNaN(dt.getTime())) return '';
+  return dt.toLocaleDateString('pt-BR')+' '+dt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+}
+function renderPropostaPronta(){
+  var list = STATE.propostas.slice().sort(function(a,b){ return (b._order||0)-(a._order||0); });
+  var seletorEl = document.getElementById('propostaProntaSeletor');
+  var bodyEl = document.getElementById('propostaProntaBody');
+  if(!list.length){
+    seletorEl.innerHTML = '';
+    bodyEl.innerHTML = '<div class="empty-state">Nenhuma proposta criada ainda. Use "Nova proposta" na barra lateral para montar a primeira.</div>';
+    return;
+  }
+  if(!propostaSelecionadaId || !list.some(function(x){ return x.id===propostaSelecionadaId; })) propostaSelecionadaId = list[0].id;
+  var prop = list.filter(function(x){ return x.id===propostaSelecionadaId; })[0] || list[0];
+
+  if(list.length>1){
+    seletorEl.innerHTML = '<div class="field" style="max-width:380px;margin:18px 0 26px;"><label for="propostaSelect">Ver proposta</label><select id="propostaSelect">'+
+      list.map(function(x){ return '<option value="'+x.id+'"'+(x.id===prop.id?' selected':'')+'>'+(x.segmento?'['+esc(x.segmento)+'] ':'')+esc(x.nome||'Proposta')+' · '+fmtDataHoraBR(x.criadoEm)+'</option>'; }).join('')+
+      '</select></div>';
+    document.getElementById('propostaSelect').addEventListener('change', function(){ propostaSelecionadaId = this.value; renderPropostaPronta(); });
+  } else {
+    seletorEl.innerHTML = '';
+  }
+
+  var t = calcPropostaTotais(prop);
+  var plano = t.plano;
+
+  var licRows = t.licItens.filter(function(x){ return x.mensal>0; }).map(function(x){
+    return '<tr><td>'+esc(x.nome)+'</td><td class="num-cell">'+fmtBRL0(x.mensal)+'</td></tr>';
+  }).join('');
+  var licTable = '<table><thead><tr><th>Item de licenciamento</th><th class="num-cell">Valor mensal (R$)</th></tr></thead><tbody>'+
+    (licRows || '<tr><td colspan="2" style="color:var(--ink-3);text-align:center;">Nenhum item de licenciamento preenchido.</td></tr>')+
+    '<tr class="total"><td>Total de licenciamento</td><td class="num-cell">'+fmtBRL0(t.licMensal)+'</td></tr>'+
+    '</tbody></table>';
+
+  var consRows = (prop.consultoria||[]).map(function(x){ return '<tr><td>'+esc(x.nome||'Item')+'</td><td class="num-cell">'+fmtBRL0(Number(x.valor)||0)+'</td></tr>'; }).join('');
+  var consTable = '<table><thead><tr><th>Item de consultoria</th><th class="num-cell">Valor (R$)</th></tr></thead><tbody>'+
+    (consRows || '<tr><td colspan="2" style="color:var(--ink-3);text-align:center;">Nenhum item de consultoria.</td></tr>')+
+    '<tr class="total"><td>Total de consultoria</td><td class="num-cell">'+fmtBRL0(t.consultoriaTotal)+'</td></tr>'+
+    '</tbody></table>';
+
+  var eqRows = (prop.equipe||[]).map(function(x){ return '<tr><td>'+esc(x.nome||'-')+'</td><td>'+esc(x.papel||'-')+'</td></tr>'; }).join('');
+  var eqTable = '<table><thead><tr><th>Pessoa</th><th>Papel / função</th></tr></thead><tbody>'+
+    (eqRows || '<tr><td colspan="2" style="color:var(--ink-3);text-align:center;">Nenhuma pessoa alocada.</td></tr>')+
+    '</tbody></table>';
+
+  var exRows = (prop.extras||[]).map(function(x){ return '<tr><td>'+esc(x.nome||'Item')+'</td><td class="num-cell">'+fmtBRL0(Number(x.valor)||0)+'</td><td>'+(x.tipo==='mensal'?'Mensal':'Única')+'</td></tr>'; }).join('');
+  var exTable = '<table><thead><tr><th>Item extra</th><th class="num-cell">Valor (R$)</th><th>Cobrança</th></tr></thead><tbody>'+
+    (exRows || '<tr><td colspan="3" style="color:var(--ink-3);text-align:center;">Nenhum item extra.</td></tr>')+
+    '</tbody></table>';
+
+  bodyEl.innerHTML = ''
+    +'<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">'
+    +'<span style="font-weight:800;color:var(--ink);font-size:16px;">'+esc(prop.nome||'Proposta')+'</span>'
+    +(prop.segmento?'<span class="pill warn">'+esc(prop.segmento)+'</span>':'')
+    +'</div>'
+    +'<h2 class="sec">Plano Bitrix24</h2>'
+    +'<p>'+(plano? esc(plano.label) : 'Nenhum plano Bitrix24 selecionado nesta proposta.')+'</p>'
+    +'<h2 class="sec">Licenciamento</h2><div class="tablewrap">'+licTable+'</div>'
+    +'<h2 class="sec">Consultoria</h2><div class="tablewrap">'+consTable+'</div>'
+    +'<h2 class="sec">Equipe alocada</h2><div class="tablewrap">'+eqTable+'</div>'
+    +'<h2 class="sec">Itens extras</h2><div class="tablewrap">'+exTable+'</div>'
+    +'<div class="totalbar"><div class="tb-label">Valor mensal total</div><div class="tb-value">'+fmtBRL0(t.mensalTotal)+'</div></div>'
+    +'<div class="totalbar"><div class="tb-label">Valor anual total</div><div class="tb-value">'+fmtBRL0(t.anualTotal)+'</div></div>';
+}
+
+/* ---------- render geral ---------- */
+function renderAll(){
+  renderPainel();
+  renderNovaProposta();
+  renderPremissas();
+  renderReferencia();
+  renderSimulador();
+  renderRecorrencia();
+  renderPortfolio();
+  renderPropostaPronta();
+}
+
+/* ---------- boot ---------- */
+renderAll();
+bindReferenciaEvents();
+bindSimuladorEvents();
+bindRecorrenciaEvents();
+bindPortfolioEvents();
+bindWizardEvents();
+
+var brandDateEl = document.getElementById('brandDate');
+brandDateEl.textContent = 'Atualizado em ' + new Date().toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'});
+
+function setSaveState(on, text){
+  var el = document.getElementById('saveState');
+  el.classList.toggle('off', !on);
+  document.getElementById('saveStateText').textContent = text;
+}
+setSaveState(false, 'Conectando ao armazenamento…');
+
+(function initDb(){
+  if(!(window.claude && window.claude.use)){ setSaveState(false, 'Modo local, sem armazenamento compartilhado'); return; }
+  window.claude.use('db').then(function(handle){
+    if(!handle){ setSaveState(false, 'Modo local, sem armazenamento compartilhado'); return; }
+    db = handle;
+    STATE.canWrite = true;
+    premissasRef = db.doc('config/premissas');
+    projetosCol = db.collection('projetos');
+    propostasCol = db.collection('propostas');
+
+    premissasRef.get().then(function(snap){
+      if(!snap.exists){ premissasRef.set(DEFAULTS).catch(function(){}); }
+    }).catch(function(){});
+
+    premissasRef.onSnapshot(function(snap){
+      if(snap.exists){
+        var data = snap.data();
+        STATE.premissas = Object.assign({}, DEFAULTS, data);
+        renderAll();
+      }
+      setSaveState(true, 'Sincronizado com o portfólio compartilhado');
+    }, function(){ setSaveState(false, 'Sem conexão, alterações não sincronizam'); });
+
+    projetosCol.onSnapshot(function(qs){
+      var list = [];
+      qs.docs.forEach(function(d){ list.push(Object.assign({id:d.id}, d.data())); });
+      list.sort(function(a,b){ return (a._order||0)-(b._order||0); });
+      STATE.projetos = list;
+      renderAll();
+    }, function(){ setSaveState(false, 'Sem conexão, alterações não sincronizam'); });
+
+    propostasCol.onSnapshot(function(qs){
+      var list = [];
+      qs.docs.forEach(function(d){ list.push(Object.assign({id:d.id}, d.data())); });
+      list.sort(function(a,b){ return (a._order||0)-(b._order||0); });
+      STATE.propostas = list;
+      renderAll();
+    }, function(){ setSaveState(false, 'Sem conexão, alterações não sincronizam'); });
+  }).catch(function(){ setSaveState(false, 'Modo local, sem armazenamento compartilhado'); });
+})();
+
+/* ---------- tema ---------- */
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  var lab=document.getElementById('themeLabel'), ico=document.getElementById('themeIcon');
+  function apply(mode){
+    root.setAttribute('data-theme', mode);
+    var dark = mode === 'dark';
+    lab.textContent = dark ? 'Tema escuro' : 'Tema claro';
+    ico.innerHTML = dark ? '&#9681;' : '&#9680;';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  }
+  var saved=null;
+  try { saved = localStorage.getItem('govtech-financeiro-tema'); } catch(e) {}
+  apply(saved === 'dark' ? 'dark' : 'light');
+  btn.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('govtech-financeiro-tema', next); } catch(e) {}
+  });
+})();
+
+/* ---------- navegação ---------- */
+document.querySelectorAll('.nav-item').forEach(function(item){
+  item.addEventListener('click', function(){
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    item.classList.add('active');
+    var target = document.getElementById(item.dataset.view);
+    if (target) { target.classList.add('active'); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+})();
+</script>
+
+</body></html>
