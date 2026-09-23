@@ -8,6 +8,7 @@ import { PageEditor } from "@/components/content/page-editor";
 import { MarkdownView } from "@/components/content/markdown-view";
 import { PanelPreview } from "@/components/content/panel-preview";
 import { InvestimentoCalculadora } from "@/components/content/investimento-calculadora";
+import { Bitrix24Modulos } from "@/components/content/bitrix24-modulos";
 import { ApresentacaoSite } from "@/components/content/apresentacao-site";
 import { MetodoVerticeJornada } from "@/components/content/metodo-vertice-jornada";
 import { ConexoesInteligentesJornada } from "@/components/content/conexoes-inteligentes-jornada";
@@ -70,6 +71,8 @@ export default async function ContentPage({ params }: PageParams) {
         <PanelPreview key="painel-preview" />
       ) : slug === "investimento" ? (
         <InvestimentoCalculadora key="investimento-calculadora" />
+      ) : slug === "sistemas-ia/bitrix24" ? (
+        <Bitrix24Modulos key="bitrix24-modulos" />
       ) : undefined;
     return <PageEditor page={page} embed={embed} />;
   }
